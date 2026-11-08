@@ -281,7 +281,7 @@ namespace StashUtility
                 var settingsGameUi = Core.States.InGameStateObject.GameUi;
                 if (settingsGameUi != null && settingsGameUi.Address != IntPtr.Zero)
                 {
-                    ImGui.SeparatorText("Active Stash Processing Debug Info");
+                    ImGui.SeparatorText(PluginText.T("stashutility.debug.active_stash_info", "Active Stash Processing Debug Info"));
                     bool isCoopMode = Core.GHSettings.EnableControllerMode && settingsGameUi.LeftPanel.Address != IntPtr.Zero;
                     if (isCoopMode)
                     {
@@ -291,7 +291,7 @@ namespace StashUtility
                         ImGui.Text($"P1 ActiveTab: 0x{coopDebug.P1ActiveTab.ToInt64():X}");
                         ImGui.Text($"P1 Status: {coopDebug.P1Status}");
                         
-                        if (coopDebug.P1TabsInfo != null && coopDebug.P1TabsInfo.Count > 0 && ImGui.TreeNode("P1 Tabs List Details"))
+                        if (coopDebug.P1TabsInfo != null && coopDebug.P1TabsInfo.Count > 0 && ImGui.TreeNode(PluginText.Label("stashutility.debug.p1_tabs_details", "P1 Tabs List Details", "p1_tabs")))
                         {
                             foreach (var info in coopDebug.P1TabsInfo)
                             {
@@ -306,7 +306,7 @@ namespace StashUtility
                         ImGui.Text($"P2 ActiveTab: 0x{coopDebug.P2ActiveTab.ToInt64():X}");
                         ImGui.Text($"P2 Status: {coopDebug.P2Status}");
 
-                        if (coopDebug.P2TabsInfo != null && coopDebug.P2TabsInfo.Count > 0 && ImGui.TreeNode("P2 Tabs List Details"))
+                        if (coopDebug.P2TabsInfo != null && coopDebug.P2TabsInfo.Count > 0 && ImGui.TreeNode(PluginText.Label("stashutility.debug.p2_tabs_details", "P2 Tabs List Details", "p2_tabs")))
                         {
                             foreach (var info in coopDebug.P2TabsInfo)
                             {
@@ -552,7 +552,7 @@ namespace StashUtility
                         {
                             ImGui.Text($"Rarity: {modsComp.Rarity}");
 
-                            if (modsComp.ImplicitMods.Count > 0 && ImGui.TreeNode("Implicit Mods"))
+                            if (modsComp.ImplicitMods.Count > 0 && ImGui.TreeNode(PluginText.Label("stashutility.implicit_mods", "Implicit Mods", "implicit_mods")))
                             {
                                 foreach (var mod in modsComp.ImplicitMods)
                                 {
@@ -560,7 +560,7 @@ namespace StashUtility
                                 }
                                 ImGui.TreePop();
                             }
-                            if (modsComp.ExplicitMods.Count > 0 && ImGui.TreeNode("Explicit Mods"))
+                            if (modsComp.ExplicitMods.Count > 0 && ImGui.TreeNode(PluginText.Label("stashutility.explicit_mods", "Explicit Mods", "explicit_mods")))
                             {
                                 foreach (var mod in modsComp.ExplicitMods)
                                 {
@@ -568,7 +568,7 @@ namespace StashUtility
                                 }
                                 ImGui.TreePop();
                             }
-                            if (modsComp.EnchantMods.Count > 0 && ImGui.TreeNode("Enchant Mods"))
+                            if (modsComp.EnchantMods.Count > 0 && ImGui.TreeNode(PluginText.Label("stashutility.enchant_mods", "Enchant Mods", "enchant_mods")))
                             {
                                 foreach (var mod in modsComp.EnchantMods)
                                 {
@@ -594,7 +594,7 @@ namespace StashUtility
                         if (lastHoveredWaystone.TryGetComponent<Mods>(out var modsCompForDebug))
                         {
                             var allRawMods = modsCompForDebug.ImplicitMods.Concat(modsCompForDebug.ExplicitMods).Concat(modsCompForDebug.EnchantMods).ToList();
-                            if (allRawMods.Count > 0 && ImGui.TreeNode("Raw Game Memory Mods (For Matching)"))
+                            if (allRawMods.Count > 0 && ImGui.TreeNode(PluginText.Label("stashutility.raw_memory_mods", "Raw Game Memory Mods (For Matching)", "raw_memory_mods")))
                             {
                                 foreach (var mod in allRawMods)
                                 {
@@ -615,7 +615,7 @@ namespace StashUtility
                         {
                             if (field.GetValue(lastHoveredWaystone) is System.Collections.Concurrent.ConcurrentDictionary<string, IntPtr> dict)
                             {
-                                if (ImGui.TreeNode("All Components (Raw Addresses)"))
+                                if (ImGui.TreeNode(PluginText.Label("stashutility.all_components", "All Components (Raw Addresses)", "all_components")))
                                 {
                                     foreach (var kv in dict)
                                     {
@@ -958,7 +958,7 @@ namespace StashUtility
                                     SaveSettings();
                                 }
 
-                                if (ImGui.Button($"+ Add New Profile Group##add_group_{cat}"))
+                                if (ImGui.Button(PluginText.T("stashutility.jewel.add_group", "+ Add New Profile Group") + $"##add_group_{cat}"))
                                 {
                                     groupList.Add(new StashUtility.Models.JewelGroup { Name = $"Profile Group {groupList.Count + 1}", MinMatchCount = 2 });
                                     SaveSettings();
@@ -970,14 +970,14 @@ namespace StashUtility
                                     var group = groupList[gIdx];
                                     ImGui.PushID($"Group_{cat}_{group.Id}");
 
-                                    string groupHeaderName = string.IsNullOrWhiteSpace(group.Name) ? $"Group {gIdx + 1}" : group.Name;
-                                    if (ImGui.CollapsingHeader($"{groupHeaderName} (Min Match: {group.MinMatchCount})##header_{group.Id}", ImGuiTreeNodeFlags.DefaultOpen))
+                                    string groupHeaderName = string.IsNullOrWhiteSpace(group.Name) ? PluginText.F("stashutility.jewel.group_default_name", "Group {0}", gIdx + 1) : group.Name;
+                                    if (ImGui.CollapsingHeader(PluginText.F("stashutility.jewel.group_header", "{0} (Min Match: {1})", groupHeaderName, group.MinMatchCount) + $"##header_{group.Id}", ImGuiTreeNodeFlags.DefaultOpen))
                                     {
                                         ImGui.Indent(10f);
 
                                         string nameBuf = group.Name ?? string.Empty;
                                         ImGui.SetNextItemWidth(180f);
-                                        if (ImGui.InputText($"Group Name##name_{group.Id}", ref nameBuf, 50))
+                                        if (ImGui.InputText(PluginText.Label("stashutility.jewel.group_name", "Group Name", $"name_{group.Id}"), ref nameBuf, 50))
                                         {
                                             group.Name = nameBuf;
                                             SaveSettings();
@@ -986,7 +986,7 @@ namespace StashUtility
                                         ImGui.SameLine();
                                         ImGui.SetNextItemWidth(140f);
                                         int minMatch = group.MinMatchCount;
-                                        if (ImGui.SliderInt($"Min Match##min_{group.Id}", ref minMatch, 1, 4))
+                                        if (ImGui.SliderInt(PluginText.Label("stashutility.jewel.min_match", "Min Match", $"min_{group.Id}"), ref minMatch, 1, 4))
                                         {
                                             group.MinMatchCount = minMatch;
                                             SaveSettings();
@@ -995,7 +995,7 @@ namespace StashUtility
                                         if (groupList.Count > 1)
                                         {
                                             ImGui.SameLine();
-                                            if (ImGui.Button($"Delete Group##del_{group.Id}"))
+                                            if (ImGui.Button(PluginText.Label("stashutility.jewel.delete_group", "Delete Group", $"del_{group.Id}")))
                                             {
                                                 groupList.RemoveAt(gIdx);
                                                 SaveSettings();
@@ -1016,7 +1016,7 @@ namespace StashUtility
                                             : allCatMods.Where(m => m.Name.Contains(filter, StringComparison.OrdinalIgnoreCase) || m.Id.Contains(filter, StringComparison.OrdinalIgnoreCase)).ToList();
 
                                         ImGui.SetNextItemWidth(220f);
-                                        if (ImGui.InputText($"Search Mod##search_{searchKey}", ref filter, 100))
+                                        if (ImGui.InputText(PluginText.Label("stashutility.jewel.search_mod", "Search Mod", $"search_{searchKey}"), ref filter, 100))
                                         {
                                             jewelCategorySearchTerms[searchKey] = filter;
                                             jewelCategorySelectedIndices[searchKey] = 0;
@@ -1028,7 +1028,7 @@ namespace StashUtility
                                             string comboLabel = matchingMods[selIdx].Name;
 
                                             ImGui.SetNextItemWidth(450f);
-                                            if (ImGui.BeginCombo($"Select Mod##combo_{searchKey}", comboLabel))
+                                            if (ImGui.BeginCombo(PluginText.Label("stashutility.jewel.select_mod", "Select Mod", $"combo_{searchKey}"), comboLabel))
                                             {
                                                 for (int i = 0; i < matchingMods.Count; i++)
                                                 {
@@ -1044,7 +1044,7 @@ namespace StashUtility
 
                                             ImGui.SameLine();
                                             var targetMod = matchingMods[selIdx];
-                                            if (ImGui.Button($"Add Mod##add_mod_{searchKey}"))
+                                            if (ImGui.Button(PluginText.Label("stashutility.jewel.add_mod", "Add Mod", $"add_mod_{searchKey}")))
                                             {
                                                 if (!group.ModPatternIds.Contains(targetMod.Id))
                                                 {
@@ -1055,13 +1055,13 @@ namespace StashUtility
                                         }
 
                                         // Active Mods List inside Group
-                                        ImGui.TextColored(new Vector4(0.4f, 0.8f, 1f, 1f), $"Active Group Modifiers ({group.ModPatternIds.Count}):");
+                                        ImGui.TextColored(new Vector4(0.4f, 0.8f, 1f, 1f), PluginText.F("stashutility.jewel.active_group_mods", "Active Group Modifiers ({0}):", group.ModPatternIds.Count));
                                         ImGui.BeginChild($"ActiveGroupMods_{searchKey}", new Vector2(0, 160), ImGuiChildFlags.Borders);
 
                                         var activeGroupMods = allCatMods.Where(m => group.ModPatternIds.Contains(m.Id)).ToList();
                                         if (activeGroupMods.Count == 0)
                                         {
-                                            ImGui.TextDisabled("No modifiers added to this group profile yet.");
+                                            ImGui.TextDisabled(PluginText.T("stashutility.jewel.no_group_mods", "No modifiers added to this group profile yet."));
                                         }
                                         else
                                         {
@@ -1084,7 +1084,7 @@ namespace StashUtility
 
                                                     float reqRoll = group.ModRequiredMinRolls[mod.Id];
                                                     int intRoll = (int)reqRoll;
-                                                    if (ImGui.SliderInt($"Req. Min Roll##min_{mod.Id}", ref intRoll, (int)mod.MinRoll, (int)mod.MaxRoll))
+                                                    if (ImGui.SliderInt(PluginText.Label("stashutility.jewel.req_min_roll", "Req. Min Roll", $"min_{mod.Id}"), ref intRoll, (int)mod.MinRoll, (int)mod.MaxRoll))
                                                     {
                                                         group.ModRequiredMinRolls[mod.Id] = (float)intRoll;
                                                         SaveSettings();
@@ -3065,7 +3065,7 @@ namespace StashUtility
                     list[i] = val;
                 }
                 ImGui.SameLine();
-                if (ImGui.Button("Remove"))
+                if (ImGui.Button(PluginText.Label("stashutility.remove", "Remove", "remove")))
                 {
                     toRemove = i;
                 }

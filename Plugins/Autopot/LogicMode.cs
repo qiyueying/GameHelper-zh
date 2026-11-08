@@ -1,3 +1,5 @@
+using GameHelper.Localization;
+
 namespace Autopot
 {
     /// <summary>Which vitals trigger Key 1 / Key 2 in simplified autopot logic.</summary>
@@ -14,17 +16,15 @@ namespace Autopot
 
     internal static class LogicModeLabels
     {
-        public static string Display(LogicMode mode) => DisplayEn(mode);
-
-        private static string DisplayEn(LogicMode mode) => mode switch
+        public static string Display(LogicMode mode, PluginLocalization text) => mode switch
         {
-            LogicMode.ManaAndLife => "Mana + Life",
-            LogicMode.LifeOnly => "Life Only",
-            LogicMode.EnergyShield => "Energy Shield (CI/LL)",
-            LogicMode.HybridLifeEs => "Hybrid (Life & ES)",
-            LogicMode.ManaOnly => "Mana",
-            LogicMode.ManaAndEs => "Mana + ES",
-            LogicMode.LifeEsMana => "Life + ES + Mana",
+            LogicMode.ManaAndLife => text.T("logic.mana_and_life", "Mana + Life"),
+            LogicMode.LifeOnly => text.T("logic.life_only", "Life Only"),
+            LogicMode.EnergyShield => text.T("logic.energy_shield", "Energy Shield (CI/LL)"),
+            LogicMode.HybridLifeEs => text.T("logic.hybrid_life_es", "Hybrid (Life & ES)"),
+            LogicMode.ManaOnly => text.T("logic.mana_only", "Mana"),
+            LogicMode.ManaAndEs => text.T("logic.mana_and_es", "Mana + ES"),
+            LogicMode.LifeEsMana => text.T("logic.life_es_mana", "Life + ES + Mana"),
             _ => mode.ToString(),
         };
 

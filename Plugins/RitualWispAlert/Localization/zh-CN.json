@@ -1,0 +1,12 @@
+{
+  "plugin.description": "在活动的驱灵祭坛鬼火周围绘制范围圆圈，玩家进入有效范围时圆圈颜色随之改变。",
+  "settings.enable_overlay": "绘制驱灵祭坛鬼火范围圆圈",
+  "settings.hide_unfocused_or_paused": "游戏失去焦点或暂停时隐藏",
+  "settings.inside_color": "在范围内时的颜色",
+  "settings.offset_x": "中心 X 偏移",
+  "settings.offset_y": "中心 Y 偏移",
+  "settings.offset_z": "高度偏移",
+  "settings.outside_color": "在范围外时的颜色",
+  "settings.radius": "圆圈半径（米）",
+  "settings.thickness": "圆圈粗细"
+}

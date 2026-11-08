@@ -145,58 +145,117 @@ namespace RunecraftHelper
 
         public override void DrawSettings()
         {
-            ImGui.TextWrapped("RunecraftHelper: while the in-game Runeshape Combinations panel is open, the " +
-                              "poe.ninja Exalted price is drawn on the right edge of each visible reward row. " +
-                              "The reward name shown is the game's own (any client language).");
+            ImGui.TextWrapped(this.PluginText.T(
+                "settings.intro",
+                "RunecraftHelper: while the in-game Runeshape Combinations panel is open, the " +
+                "poe.ninja Exalted price is drawn on the right edge of each visible reward row. " +
+                "The reward name shown is the game's own (any client language)."));
 
             ImGui.Spacing();
             ImGui.Separator();
 
-            ImGui.InputText("League", ref this.Settings.League, 64);
-            ImGui.SliderInt("Refresh interval (min)", ref this.Settings.CacheTtlMinutes, 5, 60);
+            ImGui.InputText(
+                this.PluginText.Label("settings.league", "League", "RunecraftLeague"),
+                ref this.Settings.League,
+                64);
+            ImGui.SliderInt(
+                this.PluginText.Label("settings.refresh_interval", "Refresh interval (min)", "RunecraftRefreshInterval"),
+                ref this.Settings.CacheTtlMinutes,
+                5,
+                60);
 
             int colorMode = (int)this.Settings.ColorMode;
-            if (ImGui.Combo("Price color", ref colorMode,
-                    "Off\0Relative (vs. median on screen)\0Absolute (Exalted thresholds)\0"))
+            string priceColorItems =
+                this.PluginText.T("mono.price_off", "Off") + "\0" +
+                this.PluginText.T("mono.price_relative", "Relative (vs. median on screen)") + "\0" +
+                this.PluginText.T("mono.price_absolute", "Absolute (Exalted thresholds)") + "\0";
+            if (ImGui.Combo(
+                    this.PluginText.Label("mono.price_color", "Price color", "RunecraftPriceColor"),
+                    ref colorMode,
+                    priceColorItems))
                 this.Settings.ColorMode = (RewardColorMode)colorMode;
 
-            ImGui.SliderFloat("Price X offset", ref this.Settings.OverlayXOffset, -400f, 400f, "%.0f px");
+            ImGui.SliderFloat(
+                this.PluginText.Label("mono.price_x", "Price X offset", "RunecraftPriceXOffset"),
+                ref this.Settings.OverlayXOffset,
+                -400f,
+                400f,
+                "%.0f px");
 
             ImGui.Spacing();
-            ImGui.SeparatorText("Monolith rewards");
-            ImGui.Checkbox("Show monolith reward window", ref this.Settings.ShowMonolithRewards);
+            ImGui.SeparatorText(this.PluginText.T("mono.section", "Monolith rewards"));
+            ImGui.Checkbox(
+                this.PluginText.Label("mono.show_rewards", "Show monolith reward window", "RunecraftShowMonolithRewards"),
+                ref this.Settings.ShowMonolithRewards);
             if (this.Settings.ShowMonolithRewards)
             {
-                ImGui.SliderFloat("Hide rewards under (ex)", ref this.Settings.MonolithRewardsMinExalted, 0f, 50f, "%.0f ex");
+                ImGui.SliderFloat(
+                    this.PluginText.Label("mono.hide_under", "Hide rewards under (ex)", "RunecraftMonolithMinEx"),
+                    ref this.Settings.MonolithRewardsMinExalted,
+                    0f,
+                    50f,
+                    "%.0f ex");
 
-                ImGui.InputFloat("Highlight threshold (ex)", ref this.Settings.MonolithHighlightThreshold, 1f, 10f, "%.0f");
+                ImGui.InputFloat(
+                    this.PluginText.Label("mono.highlight_threshold", "Highlight threshold (ex)", "RunecraftMonolithHighlight"),
+                    ref this.Settings.MonolithHighlightThreshold,
+                    1f,
+                    10f,
+                    "%.0f");
                 if (this.Settings.MonolithHighlightThreshold < 0f) this.Settings.MonolithHighlightThreshold = 0f;
-                ImGui.TextDisabled("Tints a monolith's header by its best reward value: green at/above the\n" +
-                    "threshold, yellow from 0.6× up to it, none below. 0 = off (use Price color).");
+                ImGui.TextDisabled(this.PluginText.T(
+                    "mono.highlight_threshold_hint",
+                    "Tints a monolith's header by its best reward value: green at/above the\n" +
+                    "threshold, yellow from 0.6× up to it, none below. 0 = off (use Price color)."));
 
-                ImGui.Checkbox("Draw value on map overlay", ref this.Settings.DrawMonolithValueOnMap);
+                ImGui.Checkbox(
+                    this.PluginText.Label("mono.draw_on_map", "Draw value on map overlay", "RunecraftDrawMonolithValueOnMap"),
+                    ref this.Settings.DrawMonolithValueOnMap);
                 if (this.Settings.DrawMonolithValueOnMap)
                 {
-                    ImGui.TextDisabled("Paints each monolith's best value (ex) on the large-map overlay, like\n" +
+                    ImGui.TextDisabled(this.PluginText.T(
+                        "mono.map_value_hint",
+                        "Paints each monolith's best value (ex) on the large-map overlay, like\n" +
                         "Radar's socket count (tinted by the threshold above). If it doesn't line\n" +
-                        "up with the monolith, match these to your Radar large-map settings:");
-                    ImGui.SliderFloat("Map value scale", ref this.Settings.MapValueScaleMultiplier, 0.1f, 3f, "%.2f");
-                    ImGui.SliderFloat("Map value X offset", ref this.Settings.MapValueXOffset, -200f, 200f, "%.0f");
-                    ImGui.SliderFloat("Map value Y offset", ref this.Settings.MapValueYOffset, -200f, 200f, "%.0f");
+                        "up with the monolith, match these to your Radar large-map settings:"));
+                    ImGui.SliderFloat(
+                        this.PluginText.Label("mono.map_value_scale", "Map value scale", "RunecraftMapValueScale"),
+                        ref this.Settings.MapValueScaleMultiplier,
+                        0.1f,
+                        3f,
+                        "%.2f");
+                    ImGui.SliderFloat(
+                        this.PluginText.Label("mono.map_value_x", "Map value X offset", "RunecraftMapValueXOffset"),
+                        ref this.Settings.MapValueXOffset,
+                        -200f,
+                        200f,
+                        "%.0f");
+                    ImGui.SliderFloat(
+                        this.PluginText.Label("mono.map_value_y", "Map value Y offset", "RunecraftMapValueYOffset"),
+                        ref this.Settings.MapValueYOffset,
+                        -200f,
+                        200f,
+                        "%.0f");
                 }
 
-                ImGui.TextDisabled("For each nearby monolith: its anchor rune + hole, and the candidate\n" +
+                ImGui.TextDisabled(this.PluginText.T(
+                    "mono.rewards_hint",
+                    "For each nearby monolith: its anchor rune + hole, and the candidate\n" +
                     "recipes (from Expedition2Recipes.dat, filtered by the anchor) with\n" +
                     "poe.ninja Exalted prices. Reads the anchor off the persistent device,\n" +
-                    "so it works even out of the network bubble.");
+                    "so it works even out of the network bubble."));
             }
 
-            ImGui.Checkbox("Show monolith debug window", ref this.Settings.ShowWindow);
+            ImGui.Checkbox(
+                this.PluginText.Label("mono.show_debug", "Show monolith debug window", "RunecraftShowMonolithDebug"),
+                ref this.Settings.ShowWindow);
             if (this.Settings.ShowWindow)
-                ImGui.TextDisabled("Pick a monolith and dump everything the offer rule uses (anchor/p/N,\n" +
+                ImGui.TextDisabled(this.PluginText.T(
+                    "mono.debug_hint",
+                    "Pick a monolith and dump everything the offer rule uses (anchor/p/N,\n" +
                     "sockets-vs-station N, area level, addresses, and every offered recipe with\n" +
                     "row/size/gate/category/reward/levels/rune pattern). 'Copy report' → clipboard\n" +
-                    "for reporting a game-vs-plugin mismatch.");
+                    "for reporting a game-vs-plugin mismatch."));
 
             ImGui.Spacing();
 
@@ -204,21 +263,24 @@ namespace RunecraftHelper
             var lastSync = this.priceCache.LastSyncUtc;
             string statusText = status switch
             {
-                PriceSyncStatus.Syncing => "syncing…",
+                PriceSyncStatus.Syncing => this.PluginText.T("status.syncing", "syncing…"),
                 PriceSyncStatus.Ready => lastSync == DateTime.MinValue
-                    ? "ready (no data yet)"
-                    : $"updated {FormatRelative(lastSync)} ago",
-                PriceSyncStatus.Error => $"error: {this.priceCache.LastError}",
-                _ => "idle",
+                    ? this.PluginText.T("status.ready_nodata", "ready (no data yet)")
+                    : this.PluginText.F("status.updated_ago", "updated {0} ago", FormatRelative(lastSync)),
+                PriceSyncStatus.Error => this.PluginText.F("status.error", "error: {0}", this.priceCache.LastError),
+                _ => this.PluginText.T("status.idle", "idle"),
             };
 
-            ImGui.Text($"Status: {statusText}");
-            ImGui.Text($"Items cached: {this.priceCache.PriceCount}");
+            ImGui.Text(this.PluginText.F("status.label", "Status: {0}", statusText));
+            ImGui.Text(this.PluginText.F("status.items_cached", "Items cached: {0}", this.priceCache.PriceCount));
             if (this.priceCache.DivineToExaltedRate > 0)
-                ImGui.Text($"1 Divine = {this.priceCache.DivineToExaltedRate:F2} Exalted");
+                ImGui.Text(this.PluginText.F(
+                    "status.divine_rate",
+                    "1 Divine = {0:F2} Exalted",
+                    this.priceCache.DivineToExaltedRate));
 
             ImGui.BeginDisabled(status == PriceSyncStatus.Syncing);
-            if (ImGui.Button("Refresh now"))
+            if (ImGui.Button(this.PluginText.T("button.refresh_now", "Refresh now")))
                 this.priceCache.StartRefresh(this.Settings.League, this.PriceCachePathname);
             ImGui.EndDisabled();
         }

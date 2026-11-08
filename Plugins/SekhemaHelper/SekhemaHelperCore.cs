@@ -153,48 +153,48 @@ namespace SekhemaHelper
             ImGui.Checkbox(this.L("sk.debug", "Debug (show weights)"), ref Settings.DebugEnable);
             if (Settings.DebugEnable)
             {
-                // Debug/RE dump tooling below is developer-facing (references config file paths) — left in English.
-                ColorSwatch("Debug Text Color", ref Settings.TextColor);
-                ColorSwatch("Debug Background", ref Settings.BackgroundColor);
+                // Debug/RE dump tooling below is developer-facing (references config file paths); labels are localized, file paths are not.
+                ColorSwatch(this.Loc.Label("sk.debug.text_color", "Debug Text Color", "sk_debug_text_color"), ref Settings.TextColor);
+                ColorSwatch(this.Loc.Label("sk.debug.background_color", "Debug Background", "sk_debug_background_color"), ref Settings.BackgroundColor);
                 // Force the Death-crystal route through an explicit crystal-id set (ignores active/collected
                 // state + room filter), to reproduce a routing bug with a known crystal set.
-                ImGui.InputText("Force Crystal IDs (route override)", ref Settings.HazardDebugCrystalIds, 128);
-                ImGuiHelper.ToolTip("Comma/space separated crystal entity ids (read from the yellow/grey id labels). Empty = normal room route.");
-                ImGui.Checkbox("Paint Walkable Grid (where can I walk)", ref Settings.HazardDebugDrawWalkable);
-                ImGuiHelper.ToolTip("Green = cells the game marks walkable, around the player. Shows why an A* leg goes straight (player on a non-walkable cell).");
+                ImGui.InputText(this.Loc.Label("sk.debug.force_crystal_ids", "Force Crystal IDs (route override)", "sk_force_crystal_ids"), ref Settings.HazardDebugCrystalIds, 128);
+                ImGuiHelper.ToolTip(this.L("sk.debug.force_crystal_ids_hint", "Comma/space separated crystal entity ids (read from the yellow/grey id labels). Empty = normal room route."));
+                ImGui.Checkbox(this.Loc.Label("sk.debug.paint_walkable_grid", "Paint Walkable Grid (where can I walk)", "sk_paint_walkable_grid"), ref Settings.HazardDebugDrawWalkable);
+                ImGuiHelper.ToolTip(this.L("sk.debug.paint_walkable_grid_hint", "Green = cells the game marks walkable, around the player. Shows why an A* leg goes straight (player on a non-walkable cell)."));
                 if (Settings.HazardDebugDrawWalkable)
-                    ImGui.SliderFloat("Walkable Paint Radius", ref Settings.HazardDebugWalkableRadius, 50f, 1200f, "%.0f");
+                    ImGui.SliderFloat(this.Loc.Label("sk.debug.walkable_paint_radius", "Walkable Paint Radius", "sk_walkable_paint_radius"), ref Settings.HazardDebugWalkableRadius, 50f, 1200f, "%.0f");
                 // Dump every room's content FK pairs (+ the FloorData content vector) to
                 // config\fk_dump.txt on the next frame the Trial map is open.
-                if (ImGui.Button("Dump FK -> config\\fk_dump.txt"))
+                if (ImGui.Button(this.Loc.Label("sk.debug.dump_fk", "Dump FK -> config\\fk_dump.txt", "sk_dump_fk")))
                     this.dumpRequested = true;
-                if (ImGui.Button("Dump Honour candidates -> config\\honour_scan.txt"))
+                if (ImGui.Button(this.Loc.Label("sk.debug.dump_honour_candidates", "Dump Honour candidates -> config\\honour_scan.txt", "sk_dump_honour_candidates")))
                     this.scanHonourRequested = true;
-                ImGui.InputInt("Honour current", ref this.honourScanCur);
-                ImGui.InputInt("Honour max", ref this.honourScanMax);
-                if (ImGui.Button("Locate Honour by value -> config\\honour_byvalue.txt") &&
+                ImGui.InputInt(this.Loc.Label("sk.debug.honour_current", "Honour current", "sk_honour_current"), ref this.honourScanCur);
+                ImGui.InputInt(this.Loc.Label("sk.debug.honour_max", "Honour max", "sk_honour_max"), ref this.honourScanMax);
+                if (ImGui.Button(this.Loc.Label("sk.debug.locate_honour", "Locate Honour by value -> config\\honour_byvalue.txt", "sk_locate_honour")) &&
                     this.honourScanCur > 0 && this.honourScanMax > 0)
                     this.scanHonourByValueRequested = true;
-                if (ImGui.Button("Dump UI fingerprints -> config\\ui_fp_dump.txt"))
+                if (ImGui.Button(this.Loc.Label("sk.debug.dump_ui_fingerprints", "Dump UI fingerprints -> config\\ui_fp_dump.txt", "sk_dump_ui_fingerprints")))
                     this.dumpUiFpRequested = true;
 
                 // Whole-floor read (SanctumPlugin picks + placement records): draw every room (incl.
                 // UI-hidden) on the large map, and dump the floor + raw door bytes for edge-graph RE.
-                ImGui.Checkbox("Draw floor plots (all rooms on large map)", ref Settings.DebugDrawFloorPlots);
-                ImGuiHelper.ToolTip("Reads the client's terrain layout: every room's type+reward at its world position, incl. rooms the UI hides. Open the large map to see it.");
-                if (ImGui.Button("Dump floor -> config\\sekhema_floor_dump.txt"))
+                ImGui.Checkbox(this.Loc.Label("sk.debug.draw_floor_plots", "Draw floor plots (all rooms on large map)", "sk_draw_floor_plots"), ref Settings.DebugDrawFloorPlots);
+                ImGuiHelper.ToolTip(this.L("sk.debug.draw_floor_plots_hint", "Reads the client's terrain layout: every room's type+reward at its world position, incl. rooms the UI hides. Open the large map to see it."));
+                if (ImGui.Button(this.Loc.Label("sk.debug.dump_floor", "Dump floor -> config\\sekhema_floor_dump.txt", "sk_dump_floor")))
                     this.dumpFloorRequested = true;
 
                 // --- Node->physical-room mapping research (open the Trial map for each action) ---
-                ImGui.SeparatorText("Room-mapping research");
-                ImGuiHelper.ToolTip("Collect ground-truth to reverse the server's (layer,room)->physical-room assignment. Keep the Trial map OPEN when pressing these.\n1) enter a fresh floor -> New floor snapshot\n2) in each room you visit -> Record current room\n3) at floor end -> Save floor\nRepeat for 8-15 floors; data lands in config\\sekhema_research\\dataset.jsonl.");
-                if (ImGui.Button("1) New floor snapshot"))
+                ImGui.SeparatorText(this.L("sk.debug.room_mapping_research", "Room-mapping research"));
+                ImGuiHelper.ToolTip(this.L("sk.debug.room_mapping_research_hint", "Collect ground-truth to reverse the server's (layer,room)->physical-room assignment. Keep the Trial map OPEN when pressing these.\n1) enter a fresh floor -> New floor snapshot\n2) in each room you visit -> Record current room\n3) at floor end -> Save floor\nRepeat for 8-15 floors; data lands in config\\sekhema_research\\dataset.jsonl."));
+                if (ImGui.Button(this.Loc.Label("sk.debug.new_floor_snapshot", "1) New floor snapshot", "sk_new_floor_snapshot")))
                     this.researchNewFloorRequested = true;
                 ImGui.SameLine();
-                if (ImGui.Button("2) Record current room"))
+                if (ImGui.Button(this.Loc.Label("sk.debug.record_current_room", "2) Record current room", "sk_record_current_room")))
                     this.researchRecordRoomRequested = true;
                 ImGui.SameLine();
-                if (ImGui.Button("3) Save floor -> dataset.jsonl"))
+                if (ImGui.Button(this.Loc.Label("sk.debug.save_floor", "3) Save floor -> dataset.jsonl", "sk_save_floor")))
                     this.researchSaveFloorRequested = true;
                 ImGui.TextDisabled(FloorResearch.Status);
             }

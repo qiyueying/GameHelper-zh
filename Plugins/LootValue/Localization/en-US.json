@@ -51,6 +51,8 @@
   "settings.smooth_label_motion": "Smooth label motion (velocity tracking)",
   "settings.text_color": "Text color",
   "settings.vertical_offset": "Vertical offset",
+  "source.poe2scout": "poe2scout",
+  "source.poe_ninja": "poe.ninja",
   "status.loaded_items": "{0} items | {1} min ago",
   "status.loading": "Loading...",
   "status.loading_provider": "Loading from {0}...",

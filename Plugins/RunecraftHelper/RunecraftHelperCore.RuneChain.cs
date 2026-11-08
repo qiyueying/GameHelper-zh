@@ -581,11 +581,11 @@ namespace RunecraftHelper
                     ImGuiTableFlags.RowBg | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.ScrollY,
                     new Vector2(0f, Math.Min(rows.Count + 1, 12) * ImGui.GetFrameHeightWithSpacing())))
             {
-                ImGui.TableSetupColumn("Rune", ImGuiTableColumnFlags.WidthFixed, 92f);
-                ImGui.TableSetupColumn("Loot ×", ImGuiTableColumnFlags.WidthFixed, 76f);
-                ImGui.TableSetupColumn("Ex/wave", ImGuiTableColumnFlags.WidthFixed, 76f);
-                ImGui.TableSetupColumn("Avoid", ImGuiTableColumnFlags.WidthFixed, 44f);
-                ImGui.TableSetupColumn("Effect", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn(this.L("runechain.col_rune", "Rune"), ImGuiTableColumnFlags.WidthFixed, 92f);
+                ImGui.TableSetupColumn(this.L("runechain.col_loot", "Loot ×"), ImGuiTableColumnFlags.WidthFixed, 76f);
+                ImGui.TableSetupColumn(this.L("runechain.col_ex_wave", "Ex/wave"), ImGuiTableColumnFlags.WidthFixed, 76f);
+                ImGui.TableSetupColumn(this.L("runechain.col_avoid", "Avoid"), ImGuiTableColumnFlags.WidthFixed, 44f);
+                ImGui.TableSetupColumn(this.L("runechain.col_effect", "Effect"), ImGuiTableColumnFlags.WidthStretch);
                 ImGui.TableSetupColumn("##rm", ImGuiTableColumnFlags.WidthFixed, 22f);
                 ImGui.TableSetupScrollFreeze(0, 1);
                 ImGui.TableHeadersRow();
@@ -628,7 +628,7 @@ namespace RunecraftHelper
                             d => string.Equals(d.Rune, e.Rune, StringComparison.Ordinal)) < 0)
                     {
                         if (ImGui.SmallButton("×")) removeKey = e.Rune;
-                        if (ImGui.IsItemHovered()) ImGui.SetTooltip("Remove from table");
+                        if (ImGui.IsItemHovered()) ImGui.SetTooltip(this.L("common.remove_from_table", "Remove from table"));
                     }
 
                     ImGui.PopID();
@@ -640,7 +640,7 @@ namespace RunecraftHelper
             if (removeKey != null)
                 rows.RemoveAll(e => string.Equals(e.Rune, removeKey, StringComparison.Ordinal));
 
-            if (ImGui.BeginCombo("Add rune##rc", "+ add…", ImGuiComboFlags.HeightLarge))
+            if (ImGui.BeginCombo("##add_rune", this.L("common.add", "+ add…"), ImGuiComboFlags.HeightLarge))
             {
                 foreach (var name in AllRuneNames)
                 {

@@ -97,16 +97,16 @@ namespace RunecraftHelper
 
             ImGui.SetNextWindowSize(new Vector2(760f, 560f), ImGuiCond.FirstUseEver);
             bool open = this.bugReportOpen;
-            if (ImGui.Begin("Monolith bug report###RunecraftBugReport", ref open))
+            if (ImGui.Begin(this.Loc.Title("debug.bug_report_title", "Monolith bug report", "RunecraftBugReport"), ref open))
             {
                 ImGui.PushStyleColor(ImGuiCol.Text, new Vector4(1f, 0.82f, 0.32f, 1f));
-                ImGui.Text("Send this to Yokken");
+                ImGui.Text(this.L("debug.bug_report_send", "Send this to Yokken"));
                 ImGui.PopStyleColor();
                 ImGui.TextWrapped(this.bugReportCopied
-                    ? "Already copied to your clipboard — just paste it. Nothing here identifies your account."
-                    : "Clipboard copy failed — select the text below and copy it manually.");
+                    ? this.L("debug.bug_report_copied", "Already copied to your clipboard — just paste it. Nothing here identifies your account.")
+                    : this.L("debug.bug_report_copy_failed", "Clipboard copy failed — select the text below and copy it manually."));
 
-                if (ImGui.Button("Copy to clipboard"))
+                if (ImGui.Button(this.Loc.Label("debug.bug_report_copy", "Copy to clipboard", "Copy to clipboard")))
                 {
                     try
                     {
@@ -120,11 +120,11 @@ namespace RunecraftHelper
                 }
 
                 ImGui.SameLine();
-                if (ImGui.Button("Refresh")) this.bugReportText = this.BuildBugReport(null);
+                if (ImGui.Button(this.Loc.Label("common.refresh", "Refresh", "Refresh"))) this.bugReportText = this.BuildBugReport(null);
                 ImGui.SameLine();
-                if (ImGui.Button("Close")) open = false;
+                if (ImGui.Button(this.Loc.Label("common.close", "Close", "Close"))) open = false;
                 ImGui.SameLine();
-                ImGui.TextDisabled($"{this.bugReportText.Length} chars");
+                ImGui.TextDisabled(this.LF("debug.bug_report_chars", "{0} chars", this.bugReportText.Length));
 
                 ImGui.Separator();
                 var avail = ImGui.GetContentRegionAvail();

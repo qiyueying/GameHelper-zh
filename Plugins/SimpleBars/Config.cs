@@ -2,6 +2,7 @@
 {
     using System;
     using System.Numerics;
+    using GameHelper.Localization;
     using GameHelper.Utils;
     using ImGuiNET;
     using Newtonsoft.Json;
@@ -277,41 +278,41 @@
         /// <summary>
         ///     Display the Config on imgui.
         /// </summary>
-        public void Draw(bool isSelf = false, TextureLoader? textures = null, bool useGradientGlobal = false)
+        public void Draw(PluginLocalization text, bool isSelf = false, TextureLoader? textures = null, bool useGradientGlobal = false)
         {
-            ImGui.Text("NOTE: For going above/below the limit, or for manual editing, press CTRL + Left Mouse Button click.");
+            ImGui.Text(text.T("config.manual_edit_note", "NOTE: For going above/below the limit, or for manual editing, press CTRL + Left Mouse Button click."));
             if (ImGui.BeginTable("config_table", 2))
             {
                 // Left column toggles (Self ordering)
                 ImGui.TableNextColumn();
-                ImGui.Checkbox("Enable bars", ref this.Enable);
+                ImGui.Checkbox(text.Label("config.enable_bars", "Enable bars", "SimpleBarsEnableBars"), ref this.Enable);
                 ImGui.TableNextColumn();
                 // Right column aligned control next to Enable: Shift
-                ImGuiHelper.Vector2SliderInt("Shift (x, y)", ImGui.GetColumnWidth(), ref this.Shift, -4000, 4000, -2500, 2500, ImGuiSliderFlags.Logarithmic);
+                ImGuiHelper.Vector2SliderInt(text.Label("config.shift", "Shift (x, y)", "SimpleBarsShift"), ImGui.GetColumnWidth(), ref this.Shift, -4000, 4000, -2500, 2500, ImGuiSliderFlags.Logarithmic);
 
                 // Use gradient textures (placed directly under Enable bars)
                 ImGui.TableNextColumn();
-                ImGui.Checkbox("Use gradient textures", ref this.UseGradientBars);
+                ImGui.Checkbox(text.Label("config.use_gradient_textures", "Use gradient textures", "SimpleBarsUseGradientTextures"), ref this.UseGradientBars);
                 ImGui.TableNextColumn();
                 // No right-side control
 
                 // Use circle dot mode
                 ImGui.TableNextColumn();
-                ImGui.Checkbox("Use circle dot", ref this.UseCircleDot);
+                ImGui.Checkbox(text.Label("config.use_circle_dot", "Use circle dot", "SimpleBarsUseCircleDot"), ref this.UseCircleDot);
                 ImGui.TableNextColumn();
-                ImGui.DragFloat("Circle scale", ref this.CircleScale, 0.01f, 0.5f, 3.0f, "%.2fx");
-                ImGui.TableNextColumn();
-                ImGui.Text("");
-                ImGui.TableNextColumn();
-                ImGui.DragFloat("Background radius", ref this.CircleBackgroundRadius, 0.5f, 0f, 128f, "%.1f px");
+                ImGui.DragFloat(text.Label("config.circle_scale", "Circle scale", "SimpleBarsCircleScale"), ref this.CircleScale, 0.01f, 0.5f, 3.0f, "%.2fx");
                 ImGui.TableNextColumn();
                 ImGui.Text("");
                 ImGui.TableNextColumn();
-                ImGui.ColorEdit4("Background dot", ref this.CircleBackgroundColor);
+                ImGui.DragFloat(text.Label("config.background_radius", "Background radius", "SimpleBarsBackgroundRadius"), ref this.CircleBackgroundRadius, 0.5f, 0f, 128f, "%.1f px");
                 ImGui.TableNextColumn();
                 ImGui.Text("");
                 ImGui.TableNextColumn();
-                ImGui.DragFloat("Arc offset (px)", ref this.CircleArcOffset, 0.5f, 0f, 128f, "%.1f px");
+                ImGui.ColorEdit4(text.Label("config.background_dot", "Background dot", "SimpleBarsBackgroundDot"), ref this.CircleBackgroundColor);
+                ImGui.TableNextColumn();
+                ImGui.Text("");
+                ImGui.TableNextColumn();
+                ImGui.DragFloat(text.Label("config.arc_offset", "Arc offset (px)", "SimpleBarsArcOffset"), ref this.CircleArcOffset, 0.5f, 0f, 128f, "%.1f px");
 
                 // Spacer row before sections below
                 ImGui.TableNextColumn(); ImGui.Text("");
@@ -319,75 +320,75 @@
 
                 // Show ES Bar
                 ImGui.TableNextColumn();
-                ImGui.Checkbox("Show Energy Shield", ref this.ShowESBar);
+                ImGui.Checkbox(text.Label("config.show_energy_shield", "Show Energy Shield", "SimpleBarsShowEnergyShield"), ref this.ShowESBar);
                 ImGui.TableNextColumn();
-                ImGui.ColorEdit4("ES Bar", ref this.ESColor);
+                ImGui.ColorEdit4(text.Label("config.es_bar_color", "ES Bar", "SimpleBarsEsBarColor"), ref this.ESColor);
                 if (isSelf && this.UseIndividualBarScale)
                 {
-                    ImGuiHelper.Vector2SliderInt("ES Scale (x, y)", ImGui.GetColumnWidth(), ref this.ESScale, MinBarScaleX, MaxBarScaleX, MinBarScaleY, MaxBarScaleY, ImGuiSliderFlags.Logarithmic);
+                    ImGuiHelper.Vector2SliderInt(text.Label("config.es_scale", "ES Scale (x, y)", "SimpleBarsEsScale"), ImGui.GetColumnWidth(), ref this.ESScale, MinBarScaleX, MaxBarScaleX, MinBarScaleY, MaxBarScaleY, ImGuiSliderFlags.Logarithmic);
                 }
 
                 // Show Health Bar
                 ImGui.TableNextColumn();
-                ImGui.Checkbox("Show Health", ref this.ShowHealthBar);
+                ImGui.Checkbox(text.Label("config.show_health", "Show Health", "SimpleBarsShowHealth"), ref this.ShowHealthBar);
                 ImGui.TableNextColumn();
-                ImGui.ColorEdit4("Healthbar", ref this.HealthbarColor);
+                ImGui.ColorEdit4(text.Label("config.healthbar_color", "Healthbar", "SimpleBarsHealthbarColor"), ref this.HealthbarColor);
                 // Background color directly under Healthbar color
                 ImGui.TableNextColumn(); ImGui.Text("");
-                ImGui.TableNextColumn(); ImGui.ColorEdit4("Background", ref this.BackgroundColor);
+                ImGui.TableNextColumn(); ImGui.ColorEdit4(text.Label("config.background_color", "Background", "SimpleBarsBackgroundColor"), ref this.BackgroundColor);
                 if (isSelf && this.UseIndividualBarScale)
                 {
-                    if (ImGuiHelper.Vector2SliderInt("Health Scale (x, y)", ImGui.GetColumnWidth(), ref this.HealthScale, MinBarScaleX, MaxBarScaleX, MinBarScaleY, MaxBarScaleY, ImGuiSliderFlags.Logarithmic))
+                    if (ImGuiHelper.Vector2SliderInt(text.Label("config.health_scale", "Health Scale (x, y)", "SimpleBarsHealthScale"), ImGui.GetColumnWidth(), ref this.HealthScale, MinBarScaleX, MaxBarScaleX, MinBarScaleY, MaxBarScaleY, ImGuiSliderFlags.Logarithmic))
                     {
                         this.UpdateGrauationsLocationData();
                     }
                 }
                 else
                 {
-                    if (ImGuiHelper.Vector2SliderInt("Scale (x, y)", ImGui.GetColumnWidth(), ref this.Scale, MinBarScaleX, MaxBarScaleX, MinBarScaleY, MaxBarScaleY, ImGuiSliderFlags.Logarithmic))
+                    if (ImGuiHelper.Vector2SliderInt(text.Label("config.scale", "Scale (x, y)", "SimpleBarsScale"), ImGui.GetColumnWidth(), ref this.Scale, MinBarScaleX, MaxBarScaleX, MinBarScaleY, MaxBarScaleY, ImGuiSliderFlags.Logarithmic))
                     {
                         this.UpdateGrauationsLocationData();
                     }
                 }
 
-                ImGuiHelper.ToolTip("By default texture is of height 16, " +
+                ImGuiHelper.ToolTip(text.T("config.scale.tooltip", "By default texture is of height 16, " +
                     "If increasing the Y axis ruins the texture, " +
                     "feel free to modify the texture height via your fav texture editor. " +
-                    "This doesn't apply to x axis.");
+                    "This doesn't apply to x axis."));
                 // Show Mana Bar
                 ImGui.TableNextColumn();
-                ImGui.Checkbox("Show Mana", ref this.ShowManaBar);
+                ImGui.Checkbox(text.Label("config.show_mana", "Show Mana", "SimpleBarsShowMana"), ref this.ShowManaBar);
                 ImGui.TableNextColumn();
-                ImGui.ColorEdit4("Mana Bar", ref this.ManaColor);
+                ImGui.ColorEdit4(text.Label("config.mana_bar_color", "Mana Bar", "SimpleBarsManaBarColor"), ref this.ManaColor);
                 if (isSelf && this.UseIndividualBarScale)
                 {
-                    ImGuiHelper.Vector2SliderInt("Mana Scale (x, y)", ImGui.GetColumnWidth(), ref this.ManaScale, MinBarScaleX, MaxBarScaleX, MinBarScaleY, MaxBarScaleY, ImGuiSliderFlags.Logarithmic);
+                    ImGuiHelper.Vector2SliderInt(text.Label("config.mana_scale", "Mana Scale (x, y)", "SimpleBarsManaScale"), ImGui.GetColumnWidth(), ref this.ManaScale, MinBarScaleX, MaxBarScaleX, MinBarScaleY, MaxBarScaleY, ImGuiSliderFlags.Logarithmic);
                 }
 
                 // Visualize culling strike
                 ImGui.TableNextColumn();
-                ImGui.Checkbox("Visualize Culling Strike Range", ref this.ShowCullStrike);
+                ImGui.Checkbox(text.Label("config.visualize_culling_strike", "Visualize Culling Strike Range", "SimpleBarsVisualizeCullStrike"), ref this.ShowCullStrike);
                 ImGui.TableNextColumn();
                 // No right-side control
 
                 // Show text
                 ImGui.TableNextColumn();
-                ImGui.Checkbox("Show health+ES (absolute) as text", ref this.ShowText);
+                ImGui.Checkbox(text.Label("config.show_health_es_text", "Show health+ES (absolute) as text", "SimpleBarsShowHealthEsText"), ref this.ShowText);
                 ImGui.TableNextColumn();
-                ImGui.ColorEdit4("Text Color", ref this.TextColor);
+                ImGui.ColorEdit4(text.Label("config.text_color", "Text Color", "SimpleBarsTextColor"), ref this.TextColor);
                 ImGui.TableNextColumn(); ImGui.Text("");
-                ImGui.TableNextColumn(); ImGui.Checkbox("Show text background", ref this.ShowTextBackground);
+                ImGui.TableNextColumn(); ImGui.Checkbox(text.Label("config.show_text_background", "Show text background", "SimpleBarsShowTextBackground"), ref this.ShowTextBackground);
                 ImGui.TableNextColumn(); ImGui.Text("");
-                ImGui.TableNextColumn(); ImGui.ColorEdit4("Text background", ref this.TextBackgroundColor);
+                ImGui.TableNextColumn(); ImGui.ColorEdit4(text.Label("config.text_background_color", "Text background", "SimpleBarsTextBackgroundColor"), ref this.TextBackgroundColor);
 
                 // HP Gradation Marks
                 ImGui.TableNextColumn();
-                ImGui.Checkbox("HP Gradation Marks", ref this.ShowHPGraduations);
-                ImGuiHelper.ToolTip("Graduation thickness depends on Font size. Also, Gradation marks are expensive to draw.");
+                ImGui.Checkbox(text.Label("config.hp_graduations", "HP Gradation Marks", "SimpleBarsHpGraduations"), ref this.ShowHPGraduations);
+                ImGuiHelper.ToolTip(text.T("config.hp_graduations.tooltip", "Graduation thickness depends on Font size. Also, Gradation marks are expensive to draw."));
                 ImGui.TableNextColumn();
                 if (this.ShowHPGraduations)
                 {
-                    if (ImGui.DragInt("HP Marks##hpgrad", ref this.Graduations, 0.05f, 0, 9))
+                    if (ImGui.DragInt(text.Label("config.hp_marks", "HP Marks", "hpgrad"), ref this.Graduations, 0.05f, 0, 9))
                     {
                         this.UpdateGrauationsLocationData();
                     }
@@ -401,11 +402,11 @@
                 if (isSelf)
                 {
                     ImGui.TableNextColumn();
-                    ImGui.Checkbox("ES Gradation Marks", ref this.ShowESGraduations);
+                    ImGui.Checkbox(text.Label("config.es_graduations", "ES Gradation Marks", "SimpleBarsEsGraduations"), ref this.ShowESGraduations);
                     ImGui.TableNextColumn();
                     if (this.ShowESGraduations)
                     {
-                        ImGui.DragInt("ES Marks##esgrad", ref this.ESGraduations, 0.05f, 0, 9);
+                        ImGui.DragInt(text.Label("config.es_marks", "ES Marks", "esgrad"), ref this.ESGraduations, 0.05f, 0, 9);
                     }
                     else
                     {
@@ -415,13 +416,13 @@
 
                 // Left column: Bar Gap
                 ImGui.TableNextColumn();
-                ImGui.DragFloat("Bar Gap (px)", ref this.BarGap, 0.5f, 0f, 12f);
+                ImGui.DragFloat(text.Label("config.bar_gap", "Bar Gap (px)", "SimpleBarsBarGap"), ref this.BarGap, 0.5f, 0f, 12f);
                 ImGui.TableNextColumn();
                 ImGui.Text("");
 
                 // Left column: Border thickness
                 ImGui.TableNextColumn();
-                ImGui.DragFloat("Border thickness", ref this.BorderThicknessScale, 0.05f, 0.25f, 4f);
+                ImGui.DragFloat(text.Label("config.border_thickness", "Border thickness", "SimpleBarsBorderThickness"), ref this.BorderThicknessScale, 0.05f, 0.25f, 4f);
                 ImGui.TableNextColumn();
                 ImGui.Text("");
 
@@ -429,16 +430,18 @@
                 if (isSelf)
                 {
                     ImGui.TableNextColumn();
-                    ImGui.Checkbox("Use individual bar scales (self)", ref this.UseIndividualBarScale);
+                    ImGui.Checkbox(text.Label("config.use_individual_bar_scales", "Use individual bar scales (self)", "SimpleBarsUseIndividualBarScales"), ref this.UseIndividualBarScale);
                     ImGui.TableNextColumn();
-                    ImGui.Text(this.UseIndividualBarScale ? "Using individual scales above" : "Uses main Scale/Health Scale");
+                    ImGui.Text(this.UseIndividualBarScale
+                        ? text.T("config.individual_scales_hint.individual", "Using individual scales above")
+                        : text.T("config.individual_scales_hint.main", "Uses main Scale/Health Scale"));
                 }
                 ImGui.EndTable();
             }
 
             // --- Live Preview ---
             ImGui.Separator();
-            ImGui.Text("Preview");
+            ImGui.Text(text.T("config.preview", "Preview"));
             float pad = 1f;
             float borderThickness = MathF.Max(1f, ImGui.GetFontSize() / 12f) * this.BorderThicknessScale;
             float gradThickness = ImGui.GetFontSize() / 9f;

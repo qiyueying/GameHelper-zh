@@ -219,13 +219,13 @@ namespace RitualHelper
             ImGui.Text(this.PluginText.T("settings.price_source", "Price source:"));
             var previousSource = this.Settings.PriceSource;
 
-            if (ImGui.RadioButton("poe.ninja", this.Settings.PriceSource == PoeNinjaPriceFetcher.SourcePoeNinja))
+            if (ImGui.RadioButton(this.PluginText.Label("source.poe_ninja", "poe.ninja", "RitualHelperSourcePoeNinja"), this.Settings.PriceSource == PoeNinjaPriceFetcher.SourcePoeNinja))
             {
                 this.Settings.PriceSource = PoeNinjaPriceFetcher.SourcePoeNinja;
             }
 
             ImGui.SameLine();
-            if (ImGui.RadioButton("poe2scout", this.Settings.PriceSource == PoeNinjaPriceFetcher.SourcePoe2Scout))
+            if (ImGui.RadioButton(this.PluginText.Label("source.poe2scout", "poe2scout", "RitualHelperSourcePoe2Scout"), this.Settings.PriceSource == PoeNinjaPriceFetcher.SourcePoe2Scout))
             {
                 this.Settings.PriceSource = PoeNinjaPriceFetcher.SourcePoe2Scout;
             }

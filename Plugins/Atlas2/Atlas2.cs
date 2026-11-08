@@ -154,41 +154,41 @@
         public override void DrawSettings()
         {
             #region SettingsUI
-            ImGui.SeparatorText("Search Maps");
-            ImGui.InputTextWithHint("Search Map", "You can search multiple maps at once using a comma separator ','", ref Settings.SearchQuery, 256);
+            ImGui.SeparatorText(this.PluginText.T("atlas.search_maps", "Search Maps"));
+            ImGui.InputTextWithHint(this.PluginText.Label("atlas.search_map", "Search Map", "Atlas2SearchMap"), this.PluginText.T("atlas.search_map_hint", "You can search multiple maps at once using a comma separator ','"), ref Settings.SearchQuery, 256);
             ImGui.SameLine();
-            if (ImGui.SmallButton("Clear"))
+            if (ImGui.SmallButton(this.PluginText.Label("atlas.clear", "Clear", "Atlas2ClearSearch")))
                 Settings.SearchQuery = string.Empty;
-            ImGui.SeparatorText("Show shortest path to");
+            ImGui.SeparatorText(this.PluginText.T("atlas.show_shortest_path_to", "Show shortest path to"));
             DrawUnifiedCategories();
 
-            ImGui.SliderFloat("Path Thickness", ref Settings.PathLineThickness, 1.0f, 8.0f);
+            ImGui.SliderFloat(this.PluginText.Label("atlas.path_thickness", "Path Thickness", "Atlas2PathThickness"), ref Settings.PathLineThickness, 1.0f, 8.0f);
 
-            ImGui.SeparatorText("Atlas Settings");
-            ImGui.Checkbox("Hide Completed Maps", ref Settings.HideCompletedMaps);
-            ImGui.Checkbox("Hide Not Accessible Maps", ref Settings.HideNotAccessibleMaps);
-            ImGui.Checkbox("Show Map Counts", ref Settings.ShowMapCounts);
-            ImGuiHelper.ToolTip("Draw connected-node and badge counts under each map label on the Atlas.");
-            ImGui.Checkbox("Show Content", ref Settings.ShowContent);
-            ImGuiHelper.ToolTip("Draw the node's content under each map label, using the known names.");
+            ImGui.SeparatorText(this.PluginText.T("atlas.atlas_settings", "Atlas Settings"));
+            ImGui.Checkbox(this.PluginText.Label("atlas.hide_completed", "Hide Completed Maps", "Atlas2HideCompleted"), ref Settings.HideCompletedMaps);
+            ImGui.Checkbox(this.PluginText.Label("atlas.hide_not_accessible", "Hide Not Accessible Maps", "Atlas2HideNotAccessible"), ref Settings.HideNotAccessibleMaps);
+            ImGui.Checkbox(this.PluginText.Label("atlas.show_map_counts", "Show Map Counts", "Atlas2ShowMapCounts"), ref Settings.ShowMapCounts);
+            ImGuiHelper.ToolTip(this.PluginText.T("atlas.show_map_counts_hint", "Draw connected-node and badge counts under each map label on the Atlas."));
+            ImGui.Checkbox(this.PluginText.Label("atlas.show_content", "Show Content", "Atlas2ShowContent"), ref Settings.ShowContent);
+            ImGuiHelper.ToolTip(this.PluginText.T("atlas.show_content_hint", "Draw the node's content under each map label, using the known names."));
             ImGui.SameLine();
-            ImGui.Checkbox("Show Node Index (debug/RE)", ref Settings.ShowNodeIndex);
+            ImGui.Checkbox(this.PluginText.Label("atlas.show_node_index", "Show Node Index (debug/RE)", "Atlas2ShowNodeIndex"), ref Settings.ShowNodeIndex);
             if (Settings.ShowContent)
             {
                 ImGui.Indent();
-                ImGui.Checkbox("Show Content Icons", ref Settings.ShowContentIcons);
+                ImGui.Checkbox(this.PluginText.Label("atlas.show_content_icons", "Show Content Icons", "Atlas2ShowContentIcons"), ref Settings.ShowContentIcons);
                 if (Settings.ShowContentIcons)
-                    ImGui.SliderFloat("Content Icon Size", ref Settings.ContentIconSize, 16f, 64f);
-                ImGui.Checkbox("Debug Content", ref Settings.ShowContentDebug);
-                ImGuiHelper.ToolTip("Also show unmapped content as its raw 0x value (for identifying new content).");
+                    ImGui.SliderFloat(this.PluginText.Label("atlas.content_icon_size", "Content Icon Size", "Atlas2ContentIconSize"), ref Settings.ContentIconSize, 16f, 64f);
+                ImGui.Checkbox(this.PluginText.Label("atlas.debug_content", "Debug Content", "Atlas2DebugContent"), ref Settings.ShowContentDebug);
+                ImGuiHelper.ToolTip(this.PluginText.T("atlas.debug_content_hint", "Also show unmapped content as its raw 0x value (for identifying new content)."));
                 ImGui.Unindent();
             }
-            ImGui.Checkbox("Show Biome Border", ref Settings.ShowBiomeBorder);
+            ImGui.Checkbox(this.PluginText.Label("atlas.show_biome_border", "Show Biome Border", "Atlas2ShowBiomeBorder"), ref Settings.ShowBiomeBorder);
             if (Settings.ShowBiomeBorder)
-                if (ImGui.TreeNode("Biome Settings"))
+                if (ImGui.TreeNode(this.PluginText.Label("atlas.biome_settings", "Biome Settings", "Atlas2BiomeSettings")))
                 {
                     ImGui.SetNextItemWidth(180);
-                    ImGui.SliderFloat("Biome Border Thickness", ref Settings.BiomeBorderThickness, 1.0f, 6.0f);
+                    ImGui.SliderFloat(this.PluginText.Label("atlas.biome_border_thickness", "Biome Border Thickness", "Atlas2BiomeBorderThickness"), ref Settings.BiomeBorderThickness, 1.0f, 6.0f);
 
                     if (ImGui.BeginTable("split", 3))
                     {
@@ -213,14 +213,14 @@
 
                             var border = ov.BorderColor ?? info.BdColor;
                             ImGui.SameLine();
-                            ColorSwatch($"Border Color##Biome{id}", ref border);
+                            ColorSwatch(this.PluginText.Label("atlas.border_color", "Border Color", $"Biome{id}"), ref border);
                             if (!ColorsEqual(border, ov.BorderColor ?? info.BdColor))
                             {
                                 ov.BorderColor = border;
                                 ApplyBiomeOverrides();
                             }
 
-                            var label = string.IsNullOrWhiteSpace(info.Label) ? $"Biome {id}" : info.Label;
+                            var label = string.IsNullOrWhiteSpace(info.Label) ? this.PluginText.F("atlas.biome_fallback", "Biome {0}", id) : info.Label;
                             ImGui.SameLine();
                             ImGui.Text(label);
                         }
@@ -230,54 +230,54 @@
                     ImGui.TreePop();
                 }
 
-            ImGui.Checkbox("Show Atlas Graph", ref Settings.ShowAtlasGraph);
+            ImGui.Checkbox(this.PluginText.Label("atlas.show_atlas_graph", "Show Atlas Graph", "Atlas2ShowAtlasGraph"), ref Settings.ShowAtlasGraph);
             if (Settings.ShowAtlasGraph)
             {
                 ImGui.SameLine();
                 ColorSwatch("##AtlasGraphLineColor", ref Settings.AtlasGraphLineColor);
-                ImGui.SliderFloat("Graph X-Offset", ref Settings.AtlasGraphOffsetX, -200f, 200f);
-                ImGui.SliderFloat("Graph Y-Offset", ref Settings.AtlasGraphOffsetY, -200f, 200f);
+                ImGui.SliderFloat(this.PluginText.Label("atlas.graph_x_offset", "Graph X-Offset", "Atlas2GraphXOffset"), ref Settings.AtlasGraphOffsetX, -200f, 200f);
+                ImGui.SliderFloat(this.PluginText.Label("atlas.graph_y_offset", "Graph Y-Offset", "Atlas2GraphYOffset"), ref Settings.AtlasGraphOffsetY, -200f, 200f);
             }
 
-            if (ImGui.TreeNode("Uncharted Waters"))
+            if (ImGui.TreeNode(this.PluginText.Label("atlas.uncharted_waters", "Uncharted Waters", "Atlas2UnchartedWaters")))
             {
-                ImGui.Checkbox("Highlight hovered ship leylines", ref Settings.ShowUnchartedLeylines);
-                ImGuiHelper.ToolTip("Highlights the atlas nodes and connections revealed by the hovered Uncharted Waters ship.");
+                ImGui.Checkbox(this.PluginText.Label("atlas.uncharted_leylines", "Highlight hovered ship leylines", "Atlas2UnchartedLeylines"), ref Settings.ShowUnchartedLeylines);
+                ImGuiHelper.ToolTip(this.PluginText.T("atlas.uncharted_leylines_hint", "Highlights the atlas nodes and connections revealed by the hovered Uncharted Waters ship."));
                 if (Settings.ShowUnchartedLeylines)
                 {
-                    ImGui.ColorEdit4("Leyline Color", ref Settings.UnchartedLeylineColor);
-                    ImGui.SliderFloat("Leyline Thickness", ref Settings.UnchartedLeylineThickness, 1f, 12f);
+                    ImGui.ColorEdit4(this.PluginText.Label("atlas.leyline_color", "Leyline Color", "Atlas2LeylineColor"), ref Settings.UnchartedLeylineColor);
+                    ImGui.SliderFloat(this.PluginText.Label("atlas.leyline_thickness", "Leyline Thickness", "Atlas2LeylineThickness"), ref Settings.UnchartedLeylineThickness, 1f, 12f);
                 }
 
-                ImGui.Checkbox("Show ships in fog", ref Settings.ShowShipsInFog);
-                ImGuiHelper.ToolTip("Marks Uncharted Waters ships that the game is not currently rendering.");
+                ImGui.Checkbox(this.PluginText.Label("atlas.ships_in_fog", "Show ships in fog", "Atlas2ShipsInFog"), ref Settings.ShowShipsInFog);
+                ImGuiHelper.ToolTip(this.PluginText.T("atlas.ships_in_fog_hint", "Marks Uncharted Waters ships that the game is not currently rendering."));
                 if (Settings.ShowShipsInFog)
-                    ImGui.SliderFloat("Ship Icon Size", ref Settings.ShipIconSize, 16f, 96f);
+                    ImGui.SliderFloat(this.PluginText.Label("atlas.ship_icon_size", "Ship Icon Size", "Atlas2ShipIconSize"), ref Settings.ShipIconSize, 16f, 96f);
                 ImGui.TreePop();
             }
 
-            if (ImGui.TreeNode("Ritual Atlas Line"))
+            if (ImGui.TreeNode(this.PluginText.Label("atlas.ritual_atlas_line", "Ritual Atlas Line", "Atlas2RitualAtlasLine")))
             {
-                ImGui.Checkbox("Predict Ritual mods", ref Settings.ShowRitualPrediction);
-                ImGuiHelper.ToolTip("Predicts the deterministic Rite modifiers for eligible Ritual-line routes.");
-                ImGui.Checkbox("Head of the King planner", ref Settings.ShowRitualPlanner);
-                ImGuiHelper.ToolTip("Lists and highlights Ritual routes and their predicted rewards while line mode is active.");
+                ImGui.Checkbox(this.PluginText.Label("atlas.ritual_predict_mods", "Predict Ritual mods", "Atlas2RitualPredictMods"), ref Settings.ShowRitualPrediction);
+                ImGuiHelper.ToolTip(this.PluginText.T("atlas.ritual_predict_mods_hint", "Predicts the deterministic Rite modifiers for eligible Ritual-line routes."));
+                ImGui.Checkbox(this.PluginText.Label("atlas.ritual_planner_toggle", "Head of the King planner", "Atlas2RitualPlanner"), ref Settings.ShowRitualPlanner);
+                ImGuiHelper.ToolTip(this.PluginText.T("atlas.ritual_planner_toggle_hint", "Lists and highlights Ritual routes and their predicted rewards while line mode is active."));
                 if (Settings.ShowRitualPlanner)
                     DrawRewardWeightsTable();
                 ImGui.TreePop();
             }
 
-            ImGui.SeparatorText("Layout Settings");
+            ImGui.SeparatorText(this.PluginText.T("atlas.layout_settings", "Layout Settings"));
             var nudge = Settings.AnchorNudge;
-            if (ImGui.SliderFloat2("Layout Nudge (px)", ref nudge, -60f, 60f))
+            if (ImGui.SliderFloat2(this.PluginText.Label("atlas.layout_nudge", "Layout Nudge (px)", "Atlas2LayoutNudge"), ref nudge, -60f, 60f))
                 Settings.AnchorNudge = nudge;
-            ImGui.SliderFloat("Scale Multiplier", ref Settings.ScaleMultiplier, 0.5f, 3.0f);
+            ImGui.SliderFloat(this.PluginText.Label("atlas.scale_multiplier", "Scale Multiplier", "Atlas2ScaleMultiplier"), ref Settings.ScaleMultiplier, 0.5f, 3.0f);
 
-            if (false && ImGui.TreeNode("Legacy Map Groups"))
+            if (false && ImGui.TreeNode(this.PluginText.Label("atlas.legacy_map_groups", "Legacy Map Groups", "Atlas2LegacyMapGroups")))
             {
-                ImGui.InputTextWithHint("##MapGroupName", "group name", ref Settings.GroupNameInput, 256);
+                ImGui.InputTextWithHint("##MapGroupName", this.PluginText.T("atlas.hint_group_name", "group name"), ref Settings.GroupNameInput, 256);
                 ImGui.SameLine();
-                if (ImGui.Button("Add new map group"))
+                if (ImGui.Button(this.PluginText.Label("atlas.add_map_group", "Add new map group", "Atlas2AddMapGroup")))
                 {
                     Settings.MapGroups.Add(new MapGroupSettings(Settings.GroupNameInput, Settings.DefaultBackgroundColor, Settings.DefaultFontColor));
                     Settings.GroupNameInput = string.Empty;
@@ -299,51 +299,51 @@
                             MoveMapGroup(i, 1);
                         }
                         ImGui.SameLine();
-                        if (ImGui.Button($"Rename Group##{i}"))
+                        if (ImGui.Button(this.PluginText.Label("atlas.rename_group", "Rename Group", $"{i}")))
                         {
                             NewGroupName = mapGroup.Name;
                             ImGui.OpenPopup($"RenamePopup##{i}");
                         }
                         ImGui.SameLine();
-                        if (ImGui.Button($"Delete Group##{i}"))
+                        if (ImGui.Button(this.PluginText.Label("atlas.delete_group", "Delete Group", $"{i}")))
                         {
                             DeleteMapGroup(i);
                         }
                         ImGui.SameLine();
                         ColorSwatch($"##MapGroupBackgroundColor{i}", ref mapGroup.BackgroundColor);
                         ImGui.SameLine();
-                        ImGui.Text("Background Color");
+                        ImGui.Text(this.PluginText.T("atlas.background_color", "Background Color"));
                         ImGui.SameLine();
                         ColorSwatch($"##MapGroupFontColor{i}", ref mapGroup.FontColor);
-                        ImGui.SameLine(); ImGui.Text("Font Color");
+                        ImGui.SameLine(); ImGui.Text(this.PluginText.T("atlas.font_color", "Font Color"));
 
                         for (int j = 0; j < mapGroup.Maps.Count; j++)
                         {
                             var mapName = mapGroup.Maps[j];
-                            if (ImGui.InputTextWithHint($"##MapName{i}-{j}", "map name", ref mapName, 256))
+                            if (ImGui.InputTextWithHint($"##MapName{i}-{j}", this.PluginText.T("atlas.hint_map_name", "map name"), ref mapName, 256))
                                 mapGroup.Maps[j] = mapName;
 
                             ImGui.SameLine();
-                            if (ImGui.Button($"Delete##MapNameDelete{i}-{j}"))
+                            if (ImGui.Button(this.PluginText.Label("atlas.delete", "Delete", $"MapNameDelete{i}-{j}")))
                             {
                                 mapGroup.Maps.RemoveAt(j);
                                 break;
                             }
                         }
 
-                        if (ImGui.Button($"Add new map##AddNewMap{i}"))
+                        if (ImGui.Button(this.PluginText.Label("atlas.add_new_map", "Add new map", $"AddNewMap{i}")))
                             mapGroup.Maps.Add(string.Empty);
 
                         if (ImGui.BeginPopupModal($"RenamePopup##{i}", ImGuiWindowFlags.AlwaysAutoResize))
                         {
-                            ImGui.InputText("New Name", ref NewGroupName, 256);
-                            if (ImGui.Button("OK"))
+                            ImGui.InputText(this.PluginText.Label("atlas.new_name", "New Name", "Atlas2NewName"), ref NewGroupName, 256);
+                            if (ImGui.Button(this.PluginText.Label("atlas.ok", "OK", "Atlas2Ok")))
                             {
                                 mapGroup.Name = NewGroupName;
                                 ImGui.CloseCurrentPopup();
                             }
                             ImGui.SameLine();
-                            if (ImGui.Button("Cancel"))
+                            if (ImGui.Button(this.PluginText.Label("atlas.cancel", "Cancel", "Atlas2Cancel")))
                             {
                                 ImGui.CloseCurrentPopup();
                             }
@@ -664,7 +664,7 @@
 
                     if (Settings.ShowMapCounts)
                     {
-                        var countText = $"Links: {nd.ConnectedGridPositions.Count}  Badges: {nd.BadgeCount}";
+                        var countText = this.PluginText.F("atlas.map_counts", "Links: {0}  Badges: {1}", nd.ConnectedGridPositions.Count, nd.BadgeCount);
                         var countTextSize = ImGui.CalcTextSize(countText);
                         var countPos = new Vector2(labelCenterX - countTextSize.X * 0.5f, nextRowTopY);
                         drawList.AddText(countPos, ImGuiHelper.Color(fontColor), countText);
@@ -756,7 +756,7 @@
                 var hasGraphIdentity = map.ConnectedGridPositions.Count > 0;
                 var drawable = !string.IsNullOrWhiteSpace(mapName) || hasGraphIdentity;
                 if (string.IsNullOrWhiteSpace(mapName) && hasGraphIdentity)
-                    mapName = $"Unknown Map [{map.Index}]";
+                    mapName = this.PluginText.F("atlas.unknown_map", "Unknown Map [{0}]", map.Index);
 
                 nodeCache.Add(new NodeData
                 {
@@ -1495,7 +1495,7 @@
                    Math.Abs(a.W - b.W) < eps;
         }
 
-        private static void PathRow(string label, ref bool enabled, ref Vector4 color, ref int maxHops)
+        private void PathRow(string label, ref bool enabled, ref Vector4 color, ref int maxHops)
         {
             ImGui.Checkbox($"##{label}Enabled", ref enabled);
             ImGui.SameLine();
@@ -1503,7 +1503,7 @@
             ImGui.SameLine();
             ImGui.SetNextItemWidth(80);
             ImGui.SliderInt($"##{label}Hops", ref maxHops, 1, 200);
-            ImGuiHelper.ToolTip("Maximum path length in maps to clear.");
+            ImGuiHelper.ToolTip(this.PluginText.T("atlas.max_hops_hint", "Maximum path length in maps to clear."));
             ImGui.SameLine();
             ImGui.Text(label);
         }
@@ -1517,10 +1517,10 @@
                 ImGui.Checkbox("##route", ref category.DrawPath);
                 ImGui.SameLine();
                 ColorSwatch("##pathText", ref category.FontColor);
-                ImGuiHelper.ToolTip("Node-text color. The path automatically uses the more colorful of the text and background colors.");
+                ImGuiHelper.ToolTip(this.PluginText.T("atlas.node_text_color_hint", "Node-text color. The path automatically uses the more colorful of the text and background colors."));
                 ImGui.SameLine();
                 ColorSwatch("##background", ref category.BackgroundColor);
-                ImGuiHelper.ToolTip("Node background color. The path automatically uses the more colorful of the text and background colors.");
+                ImGuiHelper.ToolTip(this.PluginText.T("atlas.node_background_color_hint", "Node background color. The path automatically uses the more colorful of the text and background colors."));
                 ImGui.SameLine();
                 ImGui.SetNextItemWidth(75);
                 ImGui.SliderInt("##hops", ref category.MaxHops, 1, 200);
@@ -1529,13 +1529,13 @@
                 if (open)
                 {
                     ImGui.Indent(16f);
-                    if (ImGui.SmallButton("Up") && i > 0) MoveMapGroup(i, -1);
+                    if (ImGui.SmallButton(this.PluginText.Label("atlas.up", "Up", "Atlas2Up")) && i > 0) MoveMapGroup(i, -1);
                     ImGui.SameLine();
-                    if (ImGui.SmallButton("Down") && i + 1 < Settings.MapGroups.Count) MoveMapGroup(i, 1);
+                    if (ImGui.SmallButton(this.PluginText.Label("atlas.down", "Down", "Atlas2Down")) && i + 1 < Settings.MapGroups.Count) MoveMapGroup(i, 1);
                     if (string.IsNullOrEmpty(category.BuiltInKey))
                     {
                         ImGui.SetNextItemWidth(260);
-                        ImGui.InputText("Category name", ref category.Name, 256);
+                        ImGui.InputText(this.PluginText.Label("atlas.category_name", "Category name", "Atlas2CategoryName"), ref category.Name, 256);
                     }
 
                     var targetNames = category.BuiltInTargets.Keys.ToList();
@@ -1549,16 +1549,16 @@
                     {
                         var map = category.Maps[j];
                         ImGui.SetNextItemWidth(260);
-                        if (ImGui.InputTextWithHint($"##map{j}", "map name", ref map, 256)) category.Maps[j] = map;
+                        if (ImGui.InputTextWithHint($"##map{j}", this.PluginText.T("atlas.hint_map_name", "map name"), ref map, 256)) category.Maps[j] = map;
                         ImGui.SameLine();
-                        if (ImGui.SmallButton($"Remove##map{j}")) { category.Maps.RemoveAt(j); break; }
+                        if (ImGui.SmallButton(this.PluginText.Label("atlas.remove", "Remove", $"map{j}"))) { category.Maps.RemoveAt(j); break; }
                     }
-                    if (ImGui.SmallButton("Add map")) category.Maps.Add(string.Empty);
+                    if (ImGui.SmallButton(this.PluginText.Label("atlas.add_map", "Add map", "Atlas2AddMap"))) category.Maps.Add(string.Empty);
 
                     if (string.IsNullOrEmpty(category.BuiltInKey))
                     {
                         ImGui.SameLine();
-                        if (ImGui.SmallButton("Delete category"))
+                        if (ImGui.SmallButton(this.PluginText.Label("atlas.delete_category", "Delete category", "Atlas2DeleteCategory")))
                         {
                             Settings.MapGroups.RemoveAt(i);
                             ImGui.Unindent(16f);
@@ -1573,9 +1573,9 @@
                 ImGui.PopID();
             }
 
-            ImGui.InputTextWithHint("##newCategory", "new category name", ref Settings.GroupNameInput, 256);
+            ImGui.InputTextWithHint("##newCategory", this.PluginText.T("atlas.hint_new_category", "new category name"), ref Settings.GroupNameInput, 256);
             ImGui.SameLine();
-            if (ImGui.Button("Add category") && !string.IsNullOrWhiteSpace(Settings.GroupNameInput))
+            if (ImGui.Button(this.PluginText.Label("atlas.add_category", "Add category", "Atlas2AddCategory")) && !string.IsNullOrWhiteSpace(Settings.GroupNameInput))
             {
                 Settings.MapGroups.Add(new MapGroupSettings(Settings.GroupNameInput.Trim(), Settings.DefaultBackgroundColor, Settings.DefaultFontColor));
                 Settings.GroupNameInput = string.Empty;

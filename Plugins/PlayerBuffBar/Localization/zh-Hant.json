@@ -1,4 +1,5 @@
 {
+  "settings.show_totems": "顯示圖騰",
   "plugin.description": "顯示可設定的玩家增益條、充能圖示和怒火狀態。",
   "button.apply_watchlist": "應用監控列表",
   "button.download_missing_icons": "下載缺失圖標",

@@ -1,0 +1,504 @@
+{
+  "generated": "2026-11-08",
+  "source": "poe2db.tw",
+  "terms": [
+    {
+      "en": "Divine Orb",
+      "tw": "神聖石",
+      "cn": "神圣石",
+      "source": "https://poe2db.tw/tw/Divine_Orb"
+    },
+    {
+      "en": "Exalted Orb",
+      "tw": "崇高石",
+      "cn": "崇高石",
+      "source": "https://poe2db.tw/tw/Exalted_Orb"
+    },
+    {
+      "en": "Chaos Orb",
+      "tw": "混沌石",
+      "cn": "混沌石",
+      "source": "https://poe2db.tw/tw/Chaos_Orb"
+    },
+    {
+      "en": "Orb of Alchemy",
+      "tw": "點金石",
+      "cn": "点金石",
+      "source": "https://poe2db.tw/tw/Orb_of_Alchemy"
+    },
+    {
+      "en": "Orb of Transmutation",
+      "tw": "蛻變石",
+      "cn": "蜕变石",
+      "source": "https://poe2db.tw/tw/Orb_of_Transmutation"
+    },
+    {
+      "en": "Orb of Augmentation",
+      "tw": "增幅石",
+      "cn": "增幅石",
+      "source": "https://poe2db.tw/tw/Orb_of_Augmentation"
+    },
+    {
+      "en": "Orb of Annulment",
+      "tw": "無效石",
+      "cn": "剥离石",
+      "source": "https://poe2db.tw/tw/Orb_of_Annulment"
+    },
+    {
+      "en": "Orb of Chance",
+      "tw": "機會石",
+      "cn": "机会石",
+      "source": "https://poe2db.tw/tw/Orb_of_Chance"
+    },
+    {
+      "en": "Regal Orb",
+      "tw": "富豪石",
+      "cn": "富豪石",
+      "source": "https://poe2db.tw/tw/Regal_Orb"
+    },
+    {
+      "en": "Vaal Orb",
+      "tw": "瓦爾寶珠",
+      "cn": "瓦尔宝珠",
+      "source": "https://poe2db.tw/tw/Vaal_Orb"
+    },
+    {
+      "en": "Mirror of Kalandra",
+      "tw": "卡蘭德的魔鏡",
+      "cn": "卡兰德的魔镜",
+      "source": "https://poe2db.tw/tw/Mirror_of_Kalandra"
+    },
+    {
+      "en": "Orb of Regret",
+      "tw": "後悔石",
+      "cn": "后悔石",
+      "source": "https://poe2db.tw/tw/Orb_of_Regret"
+    },
+    {
+      "en": "Scroll of Wisdom",
+      "tw": "知識卷軸",
+      "cn": "知识卷轴",
+      "source": "https://poe2db.tw/tw/Scroll_of_Wisdom"
+    },
+    {
+      "en": "Gold",
+      "tw": "金幣",
+      "cn": "金币",
+      "source": "https://poe2db.tw/tw/Gold"
+    },
+    {
+      "en": "Helmet",
+      "tw": "頭部",
+      "cn": "头盔",
+      "source": "https://poe2db.tw/tw/Helmets"
+    },
+    {
+      "en": "Amulet",
+      "tw": "項鍊",
+      "cn": "项链",
+      "source": "https://poe2db.tw/tw/Amulets"
+    },
+    {
+      "en": "Belt",
+      "tw": "腰帶",
+      "cn": "腰带",
+      "source": "https://poe2db.tw/tw/Belts"
+    },
+    {
+      "en": "Shield",
+      "tw": "盾",
+      "cn": "盾牌",
+      "source": "https://poe2db.tw/tw/Shields"
+    },
+    {
+      "en": "Bow",
+      "tw": "弓",
+      "cn": "弓类",
+      "source": "https://poe2db.tw/tw/Bows"
+    },
+    {
+      "en": "Crossbow",
+      "tw": "十字弓",
+      "cn": "战弩",
+      "source": "https://poe2db.tw/tw/Crossbows"
+    },
+    {
+      "en": "Quarterstaff",
+      "tw": "細杖",
+      "cn": "节杖",
+      "source": "https://poe2db.tw/tw/Quarterstaves"
+    },
+    {
+      "en": "Wand",
+      "tw": "法杖",
+      "cn": "法杖",
+      "source": "https://poe2db.tw/tw/Wands"
+    },
+    {
+      "en": "Sceptre",
+      "tw": "權杖",
+      "cn": "权杖",
+      "source": "https://poe2db.tw/tw/Sceptres"
+    },
+    {
+      "en": "Spear",
+      "tw": "長矛",
+      "cn": "战矛",
+      "source": "https://poe2db.tw/tw/Spears"
+    },
+    {
+      "en": "Quiver",
+      "tw": "箭袋",
+      "cn": "箭袋",
+      "source": "https://poe2db.tw/tw/Quivers"
+    },
+    {
+      "en": "Mace",
+      "tw": "錘",
+      "cn": "锤类",
+      "source": "https://poe2db.tw/tw/Maces"
+    },
+    {
+      "en": "Two Hand Mace",
+      "tw": "雙手錘",
+      "cn": "双手锤",
+      "source": "https://poe2db.tw/tw/Two_Hand_Maces"
+    },
+    {
+      "en": "Ring",
+      "tw": "戒指",
+      "cn": "戒指",
+      "source": "https://poe2db.tw/tw/Ring"
+    },
+    {
+      "en": "Boots",
+      "tw": "長靴",
+      "cn": "鞋子",
+      "source": "https://poe2db.tw/tw/Boots"
+    },
+    {
+      "en": "Modifiers",
+      "tw": "詞綴",
+      "cn": "词缀",
+      "source": "https://poe2db.tw/tw/Modifiers"
+    },
+    {
+      "en": "Rarity",
+      "tw": "稀有度",
+      "cn": "稀有度",
+      "source": "https://poe2db.tw/tw/Rarity"
+    },
+    {
+      "en": "Quality",
+      "tw": "品質",
+      "cn": "品质",
+      "source": "https://poe2db.tw/tw/Quality"
+    },
+    {
+      "en": "Corrupted",
+      "tw": "已汙染",
+      "cn": "已腐化的",
+      "source": "https://poe2db.tw/tw/Corrupted"
+    },
+    {
+      "en": "Waystone",
+      "tw": "換界石",
+      "cn": "引路石",
+      "source": "https://poe2db.tw/tw/Waystones"
+    },
+    {
+      "en": "Tablet",
+      "tw": "碑牌",
+      "cn": "石板",
+      "source": "https://poe2db.tw/tw/Tablets"
+    },
+    {
+      "en": "Jewel",
+      "tw": "珠寶",
+      "cn": "珠宝",
+      "source": "https://poe2db.tw/tw/Jewels"
+    },
+    {
+      "en": "Rune",
+      "tw": "符文",
+      "cn": "符文",
+      "source": "https://poe2db.tw/tw/Rune"
+    },
+    {
+      "en": "Soul Core",
+      "tw": "靈魂核心",
+      "cn": "灵核",
+      "source": "https://poe2db.tw/tw/Soul_Core"
+    },
+    {
+      "en": "Gem",
+      "tw": "寶石",
+      "cn": "宝石",
+      "source": "https://poe2db.tw/tw/Gem"
+    },
+    {
+      "en": "Ritual",
+      "tw": "邪靈祭祀",
+      "cn": "驱灵祭坛",
+      "source": "https://poe2db.tw/tw/Ritual"
+    },
+    {
+      "en": "Expedition",
+      "tw": "探險",
+      "cn": "先祖秘藏",
+      "source": "https://poe2db.tw/tw/Expedition"
+    },
+    {
+      "en": "Breach",
+      "tw": "裂痕",
+      "cn": "裂隙",
+      "source": "https://poe2db.tw/tw/Breach"
+    },
+    {
+      "en": "Delirium",
+      "tw": "譫妄迷霧",
+      "cn": "惊悸迷雾",
+      "source": "https://poe2db.tw/tw/Delirium"
+    },
+    {
+      "en": "Abyss",
+      "tw": "深淵",
+      "cn": "深渊",
+      "source": "https://poe2db.tw/tw/Abyss"
+    },
+    {
+      "en": "Sanctum",
+      "tw": "禁忌聖域",
+      "cn": "禁域",
+      "source": "https://poe2db.tw/tw/Sanctum"
+    },
+    {
+      "en": "Trial of the Sekhemas",
+      "tw": "絲克瑪試煉",
+      "cn": "丝克玛试炼",
+      "source": "https://poe2db.tw/tw/Trial_of_the_Sekhemas"
+    },
+    {
+      "en": "Atlas",
+      "tw": "輿圖",
+      "cn": "异界",
+      "source": "https://poe2db.tw/tw/Atlas"
+    },
+    {
+      "en": "Strongbox",
+      "tw": "保險箱",
+      "cn": "保险箱",
+      "source": "https://poe2db.tw/tw/Strongbox"
+    },
+    {
+      "en": "Essence",
+      "tw": "精髓",
+      "cn": "精华",
+      "source": "https://poe2db.tw/tw/Essence"
+    },
+    {
+      "en": "Incursion",
+      "tw": "時空穿越",
+      "cn": "穿越",
+      "source": "https://poe2db.tw/tw/Incursion"
+    },
+    {
+      "en": "Life",
+      "tw": "生命",
+      "cn": "生命",
+      "source": "https://poe2db.tw/tw/Life"
+    },
+    {
+      "en": "Mana",
+      "tw": "魔力",
+      "cn": "魔力",
+      "source": "https://poe2db.tw/tw/Mana"
+    },
+    {
+      "en": "Energy Shield",
+      "tw": "能量護盾",
+      "cn": "能量护盾",
+      "source": "https://poe2db.tw/tw/Energy_Shield"
+    },
+    {
+      "en": "Spirit",
+      "tw": "精魂",
+      "cn": "精魂",
+      "source": "https://poe2db.tw/tw/Spirit"
+    },
+    {
+      "en": "Armour",
+      "tw": "護甲",
+      "cn": "护甲",
+      "source": "https://poe2db.tw/tw/Armour"
+    },
+    {
+      "en": "Evasion",
+      "tw": "閃避",
+      "cn": "闪避",
+      "source": "https://poe2db.tw/tw/Evasion"
+    },
+    {
+      "en": "Resistance",
+      "tw": "抗性",
+      "cn": "抗性",
+      "source": "https://poe2db.tw/tw/Resistance"
+    },
+    {
+      "en": "Ailment",
+      "tw": "異常狀態",
+      "cn": "异常状态",
+      "source": "https://poe2db.tw/tw/Ailment"
+    },
+    {
+      "en": "Resistance Penetration",
+      "tw": "抗性穿透",
+      "cn": "抗性穿透",
+      "source": "https://poe2db.tw/tw/Resistance_Penetration"
+    },
+    {
+      "en": "Strength",
+      "tw": "力量",
+      "cn": "力量",
+      "source": "https://poe2db.tw/tw/Strength"
+    },
+    {
+      "en": "Dexterity",
+      "tw": "敏捷",
+      "cn": "敏捷",
+      "source": "https://poe2db.tw/tw/Dexterity"
+    },
+    {
+      "en": "Intelligence",
+      "tw": "智慧",
+      "cn": "智慧",
+      "source": "https://poe2db.tw/tw/Intelligence"
+    },
+    {
+      "en": "Stun",
+      "tw": "暈眩",
+      "cn": "晕眩",
+      "source": "https://poe2db.tw/tw/Stun"
+    },
+    {
+      "en": "Freeze",
+      "tw": "冰凍",
+      "cn": "冻结",
+      "source": "https://poe2db.tw/tw/Freeze"
+    },
+    {
+      "en": "Ignite",
+      "tw": "點燃",
+      "cn": "点燃",
+      "source": "https://poe2db.tw/tw/Ignite"
+    },
+    {
+      "en": "Shock",
+      "tw": "感電",
+      "cn": "感电",
+      "source": "https://poe2db.tw/tw/Shock"
+    },
+    {
+      "en": "Poison",
+      "tw": "中毒",
+      "cn": "中毒",
+      "source": "https://poe2db.tw/tw/Poison"
+    },
+    {
+      "en": "Bleeding",
+      "tw": "流血",
+      "cn": "流血",
+      "source": "https://poe2db.tw/tw/Bleeding"
+    },
+    {
+      "en": "Quest",
+      "tw": "任務",
+      "cn": "任务",
+      "source": "https://poe2db.tw/tw/Quest"
+    },
+    {
+      "en": "Act",
+      "tw": "章節",
+      "cn": "章节",
+      "source": "https://poe2db.tw/tw/Act"
+    },
+    {
+      "en": "League",
+      "tw": "聯盟",
+      "cn": "赛季",
+      "source": "https://poe2db.tw/tw/League"
+    },
+    {
+      "en": "Crafting",
+      "tw": "工藝",
+      "cn": "工艺",
+      "source": "https://poe2db.tw/tw/Crafting"
+    },
+    {
+      "en": "Ascendancy Class",
+      "tw": "昇華職業",
+      "cn": "升华职业",
+      "source": "https://poe2db.tw/tw/Ascendancy_class"
+    },
+    {
+      "en": "Portal",
+      "tw": "時空之門",
+      "cn": "传送门",
+      "source": "https://poe2db.tw/tw/Portal"
+    },
+    {
+      "en": "Skill Gem",
+      "tw": "技能寶石",
+      "cn": "技能宝石",
+      "source": "https://poe2db.tw/tw/Skill_Gems"
+    },
+    {
+      "en": "Support Gem",
+      "tw": "輔助寶石",
+      "cn": "辅助宝石",
+      "source": "https://poe2db.tw/tw/Support_Gems"
+    },
+    {
+      "en": "Culling Strike",
+      "tw": "撲殺",
+      "cn": "终结",
+      "source": "https://poe2db.tw/tw/Culling_Strike (title) / https://poe2db.tw/cn/Culling_Strike (title)"
+    },
+    {
+      "en": "Normal (rarity)",
+      "tw": "普通",
+      "cn": "普通",
+      "source": "https://poe2db.tw/tw/Rarity 正文"
+    },
+    {
+      "en": "Magic (rarity)",
+      "tw": "魔法",
+      "cn": "魔法",
+      "source": "https://poe2db.tw/tw/Rarity 正文"
+    },
+    {
+      "en": "Rare (rarity)",
+      "tw": "稀有",
+      "cn": "稀有",
+      "source": "https://poe2db.tw/tw/Rarity 正文"
+    },
+    {
+      "en": "Unique (rarity)",
+      "tw": "傳奇",
+      "cn": "传奇",
+      "source": "https://poe2db.tw/tw/Rarity 正文「或傳奇（棕色）」/ cn「和传奇（棕色）」"
+    },
+    {
+      "en": "Hiveblood",
+      "tw": "巢血",
+      "cn": "虫巢之血",
+      "source": "https://poe2db.tw/tw/Hiveblood / https://poe2db.tw/cn/Hiveblood"
+    },
+    {
+      "en": "Remnants",
+      "tw": "痕跡",
+      "cn": "残片",
+      "source": "https://poe2db.tw/tw/Remnants / https://poe2db.tw/cn/Remnants (single Remnant pages still English)"
+    }
+  ]
+}

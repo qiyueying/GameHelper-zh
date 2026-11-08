@@ -1575,30 +1575,30 @@ namespace RunecraftHelper
         private void DrawExpeditionDebugWindow()
         {
             ImGui.SetNextWindowSize(new Vector2(500, 470), ImGuiCond.FirstUseEver);
-            if (!ImGui.Begin("Expedition Debug###RunecraftExpeditionDebug"))
+            if (!ImGui.Begin(this.Loc.Title("debug.exp_title", "Expedition Debug", "RunecraftExpeditionDebug")))
             {
                 ImGui.End();
                 return;
             }
 
-            ImGui.Text($"Scan: {this.expScanStatus}");
+            ImGui.Text(this.LF("debug.scan", "Scan: {0}", this.expScanStatus));
             ImGui.Separator();
 
             if (this.expHasDetonator)
-                ImGui.Text($"Detonator: ({this.expDetonatorPos.X:F0}, {this.expDetonatorPos.Y:F0})");
+                ImGui.Text(this.LF("debug.detonator_pos", "Detonator: ({0:F0}, {1:F0})", this.expDetonatorPos.X, this.expDetonatorPos.Y));
             else
-                ImGui.TextDisabled("Detonator: not found");
+                ImGui.TextDisabled(this.L("debug.detonator_missing", "Detonator: not found"));
 
             if (this.expCtrlResolved)
             {
                 int remaining = this.expTotalCharges - this.expPlacedFromCtrl;
-                ImGui.Text($"Charges: total {this.expTotalCharges}  ·  placed {this.expPlacedFromCtrl} (ctrl) / " +
-                           $"{this.expPlacedFromEntities} (entities)  ·  remaining {remaining}");
-                ImGui.TextDisabled($"controller source: {this.expCtrlSource}");
+                ImGui.Text(this.LF("debug.charges", "Charges: total {0}  ·  placed {1} (ctrl) / {2} (entities)  ·  remaining {3}",
+                    this.expTotalCharges, this.expPlacedFromCtrl, this.expPlacedFromEntities, remaining));
+                ImGui.TextDisabled(this.LF("debug.ctrl_source", "controller source: {0}", this.expCtrlSource));
             }
             else
             {
-                ImGui.TextDisabled($"Charges: controller not resolved  ·  placed {this.expPlacedFromEntities} (entities)");
+                ImGui.TextDisabled(this.LF("debug.charges_unresolved", "Charges: controller not resolved  ·  placed {0} (entities)", this.expPlacedFromEntities));
             }
 
             int chests = 0, markers = 0, remnants = 0, monos = 0;
@@ -1614,26 +1614,27 @@ namespace RunecraftHelper
             }
 
             ImGui.Separator();
-            ImGui.Text($"Targets — chests {chests} · markers {markers} · remnants {remnants} · monoliths {monos}");
-            ImGui.TextDisabled("charges: S/P/C = straight / A* path / A* raw-cost, from the PREVIOUS chain node");
+            ImGui.Text(this.LF("debug.targets", "Targets — chests {0} · markers {1} · remnants {2} · monoliths {3}",
+                chests, markers, remnants, monos));
+            ImGui.TextDisabled(this.L("debug.charges_legend", "charges: S/P/C = straight / A* path / A* raw-cost, from the PREVIOUS chain node"));
             ImGui.Spacing();
 
             if (ImGui.BeginTable("expitems", 6,
                     ImGuiTableFlags.RowBg | ImGuiTableFlags.Borders | ImGuiTableFlags.ScrollY))
             {
-                ImGui.TableSetupColumn("kind", ImGuiTableColumnFlags.WidthFixed, 64f);
-                ImGui.TableSetupColumn("grid", ImGuiTableColumnFlags.WidthFixed, 88f);
+                ImGui.TableSetupColumn(this.L("debug.col_kind", "kind"), ImGuiTableColumnFlags.WidthFixed, 64f);
+                ImGui.TableSetupColumn(this.L("debug.col_grid", "grid"), ImGuiTableColumnFlags.WidthFixed, 88f);
                 ImGui.TableSetupColumn("S", ImGuiTableColumnFlags.WidthFixed, 42f);
                 ImGui.TableSetupColumn("P", ImGuiTableColumnFlags.WidthFixed, 42f);
                 ImGui.TableSetupColumn("C", ImGuiTableColumnFlags.WidthFixed, 42f);
-                ImGui.TableSetupColumn("info", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn(this.L("debug.col_info", "info"), ImGuiTableColumnFlags.WidthStretch);
                 ImGui.TableSetupScrollFreeze(0, 1);
                 ImGui.TableHeadersRow();
 
                 foreach (var it in this.expItems)
                 {
                     ImGui.TableNextRow();
-                    ImGui.TableSetColumnIndex(0); ImGui.Text(it.Kind == ExpKind.Charge ? $"chg#{it.ChainIndex}" : it.Kind.ToString());
+                    ImGui.TableSetColumnIndex(0); ImGui.Text(it.Kind == ExpKind.Charge ? this.LF("debug.charge_row", "chg#{0}", it.ChainIndex) : it.Kind.ToString());
                     ImGui.TableSetColumnIndex(1); ImGui.Text($"{it.Pos.X:F0}, {it.Pos.Y:F0}");
                     ImGui.TableSetColumnIndex(2); ImGui.Text(it.Straight >= 0f ? it.Straight.ToString("F0") : "-");
                     ImGui.TableSetColumnIndex(3); ImGui.Text(it.Path >= 0f ? it.Path.ToString("F0") : "-");
@@ -3678,8 +3679,8 @@ namespace RunecraftHelper
                          ImGuiTableFlags.RowBg | ImGuiTableFlags.BordersInnerV | ImGuiTableFlags.ScrollY,
                          new Vector2(0f, Math.Min(rewardRows.Count + 1, 9) * ImGui.GetFrameHeightWithSpacing())))
             {
-                ImGui.TableSetupColumn("Reward", ImGuiTableColumnFlags.WidthStretch);
-                ImGui.TableSetupColumn("Weight", ImGuiTableColumnFlags.WidthFixed, 120f);
+                ImGui.TableSetupColumn(this.L("common.reward", "Reward"), ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn(this.L("common.weight", "Weight"), ImGuiTableColumnFlags.WidthFixed, 120f);
                 ImGui.TableSetupColumn("##rm", ImGuiTableColumnFlags.WidthFixed, 22f);
                 ImGui.TableSetupScrollFreeze(0, 1);
                 ImGui.TableHeadersRow();
@@ -3720,7 +3721,7 @@ namespace RunecraftHelper
                     if (profile.Weights.ContainsKey(icon))
                     {
                         if (ImGui.SmallButton($"×##rm_{icon}")) removeKey = icon;
-                        if (ImGui.IsItemHovered()) ImGui.SetTooltip("Remove from table");
+                        if (ImGui.IsItemHovered()) ImGui.SetTooltip(this.L("common.remove_from_table", "Remove from table"));
                     }
                 }
 
@@ -3728,7 +3729,7 @@ namespace RunecraftHelper
                 if (removeKey != null) profile.Weights.Remove(removeKey);
             }
 
-            if (ImGui.BeginCombo("Add reward type", "+ add…", ImGuiComboFlags.HeightLarge))
+            if (ImGui.BeginCombo("##add_reward_type", this.L("common.add", "+ add…"), ImGuiComboFlags.HeightLarge))
             {
                 foreach (var kv in ExpRewardLabels)
                 {

@@ -1,0 +1,12 @@
+{
+  "plugin.description": "在活動中的邪靈祭祀鬼火周圍繪製範圍圓圈，玩家進入有效範圍時圓圈顏色隨之改變。",
+  "settings.enable_overlay": "繪製邪靈祭祀鬼火範圍圓圈",
+  "settings.hide_unfocused_or_paused": "遊戲失去焦點或暫停時隱藏",
+  "settings.inside_color": "在範圍內時的顏色",
+  "settings.offset_x": "中心 X 偏移",
+  "settings.offset_y": "中心 Y 偏移",
+  "settings.offset_z": "高度偏移",
+  "settings.outside_color": "在範圍外時的顏色",
+  "settings.radius": "圓圈半徑（公尺）",
+  "settings.thickness": "圓圈粗細"
+}

@@ -250,10 +250,10 @@ namespace LootValue
 
             ImGui.Separator();
             ImGui.Text(this.PluginText.T("section.price_source", "Price source"));
-            if (ImGui.RadioButton("poe2scout", this.Settings.PriceSource == PoeNinjaPriceFetcher.SourcePoe2Scout))
+            if (ImGui.RadioButton(this.PluginText.Label("source.poe2scout", "poe2scout", "LootValueSourcePoe2Scout"), this.Settings.PriceSource == PoeNinjaPriceFetcher.SourcePoe2Scout))
                 this.Settings.PriceSource = PoeNinjaPriceFetcher.SourcePoe2Scout;
             ImGui.SameLine();
-            if (ImGui.RadioButton("poe.ninja", this.Settings.PriceSource == PoeNinjaPriceFetcher.SourcePoeNinja))
+            if (ImGui.RadioButton(this.PluginText.Label("source.poe_ninja", "poe.ninja", "LootValueSourcePoeNinja"), this.Settings.PriceSource == PoeNinjaPriceFetcher.SourcePoeNinja))
                 this.Settings.PriceSource = PoeNinjaPriceFetcher.SourcePoeNinja;
 
             if (PoeNinjaPriceFetcher.IsUsingFallback)

@@ -402,19 +402,19 @@ namespace RunecraftHelper
             // as recipe tables are expanded/collapsed. The constraint keeps width sane and caps height so a
             // long list can't run off-screen (it scrolls past the cap instead).
             ImGui.SetNextWindowSizeConstraints(new Vector2(260, 0), new Vector2(640, 900));
-            if (ImGui.Begin("Monolith Rewards", ImGuiWindowFlags.AlwaysAutoResize))
+            if (ImGui.Begin(this.Loc.Title("mono.rewards_title", "Monolith Rewards", "RunecraftMonolithRewards"), ImGuiWindowFlags.AlwaysAutoResize))
             {
                 // Only shown when an 8+ hole monolith is in the area: that is the case still reported
                 // as wrong, it is rare enough that a reporter gets one shot at capturing it, and on
                 // every ordinary map the button would just be clutter.
                 if (this.HasBigMonolith())
                 {
-                    if (ImGui.Button("Copy for bug report")) this.OpenBugReport(null);
+                    if (ImGui.Button(this.Loc.Label("mono.copy_bug_report", "Copy for bug report", "Copy for bug report"))) this.OpenBugReport(null);
                     if (ImGui.IsItemHovered())
-                        ImGui.SetTooltip(
+                        ImGui.SetTooltip(this.L("mono.copy_bug_report_hint",
                             "An 8+ hole monolith is nearby. Open its Runeshape Combinations panel\n" +
                             "first, then press this: with the panel open, the report can compare\n" +
-                            "the game's own recipe list against ours.");
+                            "the game's own recipe list against ours."));
                     ImGui.Separator();
                 }
 
@@ -478,7 +478,7 @@ namespace RunecraftHelper
 
                     if (v.AnchorIdx < 0 && !v.IsUnique && !(v.IsRerolled && v.Candidates.Count > 0))
                     {
-                        ImGui.TextDisabled("  anchor not resolved (station unavailable)");
+                        ImGui.TextDisabled(this.L("mono.anchor_unresolved", "  anchor not resolved (station unavailable)"));
                         continue;
                     }
 
@@ -488,10 +488,10 @@ namespace RunecraftHelper
                             ImGuiTableFlags.RowBg | ImGuiTableFlags.Borders | ImGuiTableFlags.SizingStretchProp,
                             new Vector2(430f, 0f)))
                     {
-                        ImGui.TableSetupColumn("Reward", ImGuiTableColumnFlags.WidthStretch);
+                        ImGui.TableSetupColumn(this.L("common.reward", "Reward"), ImGuiTableColumnFlags.WidthStretch);
                         ImGui.TableSetupColumn("x", ImGuiTableColumnFlags.WidthFixed, 26f);
-                        ImGui.TableSetupColumn("Unit", ImGuiTableColumnFlags.WidthFixed, 58f);
-                        ImGui.TableSetupColumn("Total", ImGuiTableColumnFlags.WidthFixed, 62f);
+                        ImGui.TableSetupColumn(this.L("mono.col_unit", "Unit"), ImGuiTableColumnFlags.WidthFixed, 58f);
+                        ImGui.TableSetupColumn(this.L("mono.col_total", "Total"), ImGuiTableColumnFlags.WidthFixed, 62f);
                         ImGui.TableHeadersRow();
 
                         int shown = 0;
@@ -527,7 +527,7 @@ namespace RunecraftHelper
                         {
                             ImGui.TableNextRow();
                             ImGui.TableSetColumnIndex(0);
-                            ImGui.TextDisabled("(nothing above threshold)");
+                            ImGui.TextDisabled(this.L("mono.nothing_above", "(nothing above threshold)"));
                         }
 
                         ImGui.EndTable();
@@ -547,7 +547,7 @@ namespace RunecraftHelper
         private void DrawMonolithDebugWindow()
         {
             ImGui.SetNextWindowSize(new Vector2(680, 460), ImGuiCond.FirstUseEver);
-            if (!ImGui.Begin("Monolith Debug###RunecraftMonolithDebug"))
+            if (!ImGui.Begin(this.Loc.Title("debug.mono_title", "Monolith Debug", "RunecraftMonolithDebug")))
             {
                 ImGui.End();
                 return;
@@ -555,7 +555,7 @@ namespace RunecraftHelper
 
             if (this.monolithViews.Count == 0)
             {
-                ImGui.TextDisabled("No monoliths detected in this area.");
+                ImGui.TextDisabled(this.L("debug.no_monoliths", "No monoliths detected in this area."));
                 ImGui.End();
                 return;
             }
@@ -565,14 +565,14 @@ namespace RunecraftHelper
             {
                 var mv = this.monolithViews[i];
                 labels[i] = mv.IsUnique
-                    ? $"Unique  {mv.HoleCount}h  ({mv.Distance:F0})"
+                    ? this.LF("debug.mono_unique_item", "Unique  {0}h  ({1:F0})", mv.HoleCount, mv.Distance)
                     : mv.AnchorIdx >= 0
-                        ? $"{mv.AnchorName}  hole {mv.AnchorPos + 1}/{mv.HoleCount}  ({mv.Distance:F0})"
-                        : $"(anchor ?)  {mv.HoleCount}h  ({mv.Distance:F0})";
+                        ? this.LF("debug.mono_item", "{0}  hole {1}/{2}  ({3:F0})", mv.AnchorName, mv.AnchorPos + 1, mv.HoleCount, mv.Distance)
+                        : this.LF("debug.mono_item_unresolved", "(anchor ?)  {0}h  ({1:F0})", mv.HoleCount, mv.Distance);
             }
             if (this.monolithDebugSel < 0 || this.monolithDebugSel >= labels.Length) this.monolithDebugSel = 0;
             ImGui.SetNextItemWidth(420f);
-            ImGui.Combo("Monolith", ref this.monolithDebugSel, labels, labels.Length);
+            ImGui.Combo("##monolith_sel", ref this.monolithDebugSel, labels, labels.Length);
 
             var v = this.monolithViews[this.monolithDebugSel];
             var red = new Vector4(1f, 0.45f, 0.45f, 1f);
@@ -580,25 +580,25 @@ namespace RunecraftHelper
 
             ImGui.Separator();
             if (v.IsUnique)
-                ImGui.Text($"Unique monolith (no anchor) — offers all recipes with size <= N ({v.HoleCount}).");
+                ImGui.Text(this.LF("debug.mono_unique_line", "Unique monolith (no anchor) — offers all recipes with size <= N ({0}).", v.HoleCount));
             else if (v.AnchorIdx < 0)
             {
-                ImGui.TextColored(red, "Anchor not resolved — no recipes.");
+                ImGui.TextColored(red, this.L("debug.anchor_unresolved", "Anchor not resolved — no recipes."));
                 if (!string.IsNullOrEmpty(v.StationDiag))
-                    ImGui.TextColored(red, $"  why: {v.StationDiag}");
+                    ImGui.TextColored(red, this.LF("debug.mono_why", "  why: {0}", v.StationDiag));
             }
             else
-                ImGui.Text($"Anchor: {v.AnchorName} (idx {v.AnchorIdx})    p={v.AnchorPos}  (hole {v.AnchorPos + 1})");
+                ImGui.Text(this.LF("debug.mono_anchor", "Anchor: {0} (idx {1})    p={2}  (hole {3})", v.AnchorName, v.AnchorIdx, v.AnchorPos, v.AnchorPos + 1));
 
             // N: station +0x38 vs StateMachine "sockets" — flag the under-read case.
             if (v.SocketsState >= 0 && v.SocketsState != v.HoleCount)
-                ImGui.TextColored(red, $"N = {v.HoleCount}  (station +0x38)    sockets state = {v.SocketsState}   <- differ");
+                ImGui.TextColored(red, this.LF("debug.mono_n_differ", "N = {0}  (station +0x38)    sockets state = {1}   <- differ", v.HoleCount, v.SocketsState));
             else
-                ImGui.Text($"N = {v.HoleCount}    sockets state = {v.SocketsState}");
+                ImGui.Text(this.LF("debug.mono_n", "N = {0}    sockets state = {1}", v.HoleCount, v.SocketsState));
 
-            ImGui.Text($"Area level: {v.AreaLevel}");
+            ImGui.Text(this.LF("debug.area_level", "Area level: {0}", v.AreaLevel));
             if (v.IsForeign)
-                ImGui.TextColored(red, "FOREIGN monolith (recipe-mode 0) — standalone \"additional\", not part of the Expedition dig, excluded from the route");
+                ImGui.TextColored(red, this.L("debug.mono_foreign", "FOREIGN monolith (recipe-mode 0) — standalone \"additional\", not part of the Expedition dig, excluded from the route"));
             ImGui.TextColored(grey, $"device 0x{v.EntityId:X}   station 0x{v.StationAddr:X}   mode={v.RecipeMode}   emp={v.RunesEmpowered}   chainFrame={RuneChainHighlightActive(v)}   activated={v.Activated}   glow={v.GlowCount}   +0x40={FmtI(v.Field40)}  +0x44={FmtI(v.Field44)}");
             if (!string.IsNullOrEmpty(v.SmStates))
                 ImGui.TextColored(grey, $"SM states: {v.SmStates}");
@@ -606,24 +606,24 @@ namespace RunecraftHelper
             // Same report as the rewards window's button, focused on the selected monolith. This entry
             // point has no hole-count condition, which is the fallback when the hole count itself
             // under-reads and the other button therefore never appears.
-            if (ImGui.Button("Copy report"))
+            if (ImGui.Button(this.Loc.Label("debug.copy_report", "Copy report", "Copy report")))
                 this.OpenBugReport(v);
             ImGui.SameLine();
-            ImGui.TextDisabled($"{v.Candidates.Count} recipe(s) offered");
+            ImGui.TextDisabled(this.LF("debug.recipes_offered", "{0} recipe(s) offered", v.Candidates.Count));
 
             ImGui.Separator();
             if (ImGui.BeginTable("mdbg", 8,
                     ImGuiTableFlags.RowBg | ImGuiTableFlags.Borders | ImGuiTableFlags.ScrollY |
                     ImGuiTableFlags.SizingFixedFit | ImGuiTableFlags.Resizable))
             {
-                ImGui.TableSetupColumn("row", ImGuiTableColumnFlags.WidthFixed, 44f);
-                ImGui.TableSetupColumn("sz", ImGuiTableColumnFlags.WidthFixed, 26f);
-                ImGui.TableSetupColumn("gate", ImGuiTableColumnFlags.WidthFixed, 40f);
-                ImGui.TableSetupColumn("cat", ImGuiTableColumnFlags.WidthFixed, 28f);
-                ImGui.TableSetupColumn("reward", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn(this.L("debug.col_row", "row"), ImGuiTableColumnFlags.WidthFixed, 44f);
+                ImGui.TableSetupColumn(this.L("debug.col_sz", "sz"), ImGuiTableColumnFlags.WidthFixed, 26f);
+                ImGui.TableSetupColumn(this.L("debug.col_gate", "gate"), ImGuiTableColumnFlags.WidthFixed, 40f);
+                ImGui.TableSetupColumn(this.L("debug.col_cat", "cat"), ImGuiTableColumnFlags.WidthFixed, 28f);
+                ImGui.TableSetupColumn(this.L("common.reward", "reward"), ImGuiTableColumnFlags.WidthStretch);
                 ImGui.TableSetupColumn("FK / Id", ImGuiTableColumnFlags.WidthStretch);
-                ImGui.TableSetupColumn("lvl", ImGuiTableColumnFlags.WidthFixed, 56f);
-                ImGui.TableSetupColumn("holes (anchor in [])", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn(this.L("debug.col_lvl", "lvl"), ImGuiTableColumnFlags.WidthFixed, 56f);
+                ImGui.TableSetupColumn(this.L("debug.col_holes", "holes (anchor in [])"), ImGuiTableColumnFlags.WidthStretch);
                 ImGui.TableSetupScrollFreeze(0, 1);
                 ImGui.TableHeadersRow();
 
@@ -644,7 +644,7 @@ namespace RunecraftHelper
                 {
                     ImGui.TableNextRow();
                     ImGui.TableSetColumnIndex(4);
-                    ImGui.TextDisabled("(no recipes)");
+                    ImGui.TextDisabled(this.L("debug.no_recipes", "(no recipes)"));
                 }
 
                 ImGui.EndTable();
@@ -660,23 +660,23 @@ namespace RunecraftHelper
         private void DrawOverlayRowsDebugWindow()
         {
             ImGui.SetNextWindowSize(new Vector2(640, 320), ImGuiCond.FirstUseEver);
-            if (!ImGui.Begin("Overlay Rows Debug###RunecraftOverlayRowsDebug"))
+            if (!ImGui.Begin(this.Loc.Title("debug.overlay_title", "Overlay Rows Debug", "RunecraftOverlayRowsDebug")))
             {
                 ImGui.End();
                 return;
             }
 
-            ImGui.Text($"Combinations panel rows: {this.recipes.Count}  (open the panel to populate)");
+            ImGui.Text(this.LF("debug.overlay_caption", "Combinations panel rows: {0}  (open the panel to populate)", this.recipes.Count));
             if (this.recipes.Count > 0 && ImGui.BeginTable("ovrows", 6,
                     ImGuiTableFlags.RowBg | ImGuiTableFlags.Borders | ImGuiTableFlags.ScrollY |
                     ImGuiTableFlags.SizingFixedFit | ImGuiTableFlags.Resizable))
             {
                 ImGui.TableSetupColumn("x", ImGuiTableColumnFlags.WidthFixed, 24f);
-                ImGui.TableSetupColumn("parsed name", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn(this.L("debug.col_parsed_name", "parsed name"), ImGuiTableColumnFlags.WidthStretch);
                 ImGui.TableSetupColumn("MetaId", ImGuiTableColumnFlags.WidthStretch);
                 ImGui.TableSetupColumn("DdsArt", ImGuiTableColumnFlags.WidthStretch);
                 ImGui.TableSetupColumn("ex", ImGuiTableColumnFlags.WidthFixed, 64f);
-                ImGui.TableSetupColumn("branch", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn(this.L("debug.col_branch", "branch"), ImGuiTableColumnFlags.WidthStretch);
                 ImGui.TableSetupScrollFreeze(0, 1);
                 ImGui.TableHeadersRow();
 
