@@ -1,0 +1,161 @@
+name: zh-build
+
+# 上游发版 -> 自动构建汉化版并发布 Release。
+# 触发方式：
+#   1. 定时（每天一次）：发现上游有新 tag 就合并、构建、发版
+#   2. 手动 workflow_dispatch：可指定上游 tag，留空则用最新
+#   3. 推送 v*-zh 标签：直接用该版本号构建发版（本地构建后想同步到 Release 时用）
+on:
+  workflow_dispatch:
+    inputs:
+      upstream_tag:
+        description: "上游 tag（例如 v1.5.12；留空 = 自动取最新）"
+        required: false
+        default: ""
+  schedule:
+    - cron: "17 3 * * *"
+  push:
+    tags:
+      - "v*-zh"
+
+concurrency:
+  group: zh-build
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    env:
+      UPSTREAM_URL: https://github.com/MordWraith/Gamehelper
+      ZH_BRANCH: zh
+    steps:
+      # 定时/手动触发固定检出工作分支 zh（与仓库默认分支无关）；推送 tag 时检出该 tag。
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          ref: ${{ github.event_name == 'push' && github.ref_name || 'zh' }}
+
+      - name: 解析版本
+        id: meta
+        shell: pwsh
+        run: |
+          $inputTag = "${{ inputs.upstream_tag }}"
+          $ref = "$env:GITHUB_REF"
+          $tag = ""
+          $ver = ""
+          if ($inputTag) {
+              $tag = $inputTag.Trim()
+              $ver = $tag.TrimStart("v")
+          }
+          elseif ($ref -like "refs/tags/v*-zh") {
+              $name = $ref -replace "^refs/tags/", ""
+              $ver = $name.Substring(1, $name.Length - 4)
+          }
+          else {
+              git fetch --no-recurse-submodules $env:UPSTREAM_URL "+refs/heads/main:refs/remotes/upstream/main" "+refs/tags/*:refs/tags/*"
+              if ($LASTEXITCODE -ne 0) { throw "git fetch upstream failed" }
+              $tag = (git describe --tags --abbrev=0 upstream/main).Trim()
+              $ver = $tag.TrimStart("v")
+          }
+          if (-not $ver) { throw "cannot determine version" }
+          Write-Host "upstream tag: $tag   version: $ver"
+          "version=$ver" >> $env:GITHUB_OUTPUT
+          "tag=$tag" >> $env:GITHUB_OUTPUT
+
+      - name: 检查是否已发布
+        id: skip
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $ver = "${{ steps.meta.outputs.version }}"
+          $exists = $false
+          gh release view "v$ver-zh" --json tagName *> $null
+          if ($LASTEXITCODE -eq 0) { $exists = $true }
+          $skip = ($env:GITHUB_EVENT_NAME -eq "schedule") -and $exists
+          Write-Host "release v$ver-zh exists: $exists   skip: $skip"
+          if ($skip) { "skip=true" >> $env:GITHUB_OUTPUT } else { "skip=false" >> $env:GITHUB_OUTPUT }
+
+      - name: 合并上游
+        if: steps.skip.outputs.skip != "true" && steps.meta.outputs.tag != ""
+        shell: pwsh
+        run: |
+          $tag = "${{ steps.meta.outputs.tag }}"
+          $behind = (git rev-list --count "HEAD..$tag").Trim()
+          if ($behind -eq "0") {
+              Write-Host "branch already contains $tag"
+              exit 0
+          }
+          Write-Host "merging $tag ($behind commits)"
+          git -c user.name="zh-sync" -c user.email="zh-sync@local" merge --no-edit $tag
+          if ($LASTEXITCODE -ne 0) {
+              "## 合并上游 $tag 失败：有冲突" >> $env:GITHUB_STEP_SUMMARY
+              "```" >> $env:GITHUB_STEP_SUMMARY
+              (git diff --name-only --diff-filter=U) >> $env:GITHUB_STEP_SUMMARY
+              "```" >> $env:GITHUB_STEP_SUMMARY
+              "本地执行 tools/zh-sync/build-zh.ps1 -Sync 解决冲突后再推送。" >> $env:GITHUB_STEP_SUMMARY
+              exit 1
+          }
+
+      - name: 安装 .NET 10
+        if: steps.skip.outputs.skip != "true"
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "10.0.x"
+
+      - name: 自检 + 构建 + 打包
+        if: steps.skip.outputs.skip != "true"
+        shell: pwsh
+        run: |
+          ./tools/zh-sync/build-zh.ps1 -Version "${{ steps.meta.outputs.version }}"
+
+      - name: 上传构建产物
+        if: steps.skip.outputs.skip != "true"
+        uses: actions/upload-artifact@v4
+        with:
+          name: gamehelper-zh-${{ steps.meta.outputs.version }}
+          path: dist/*.zip
+          retention-days: 14
+
+      - name: 发布 Release
+        if: steps.skip.outputs.skip != "true"
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $ver = "${{ steps.meta.outputs.version }}"
+          $tagName = "v$ver-zh"
+          $assets = @("dist/GameHelper-zh-v$ver.zip", "dist/GameHelper-zh-langpack-v$ver.zip")
+          $notes = @(
+              "基于上游 MordWraith/Gamehelper $ver 的简体/繁体中文构建。",
+              "",
+              "| 资产 | 用途 |",
+              "| --- | --- |",
+              "| GameHelper-zh-v$ver.zip | 完整汉化版：解压即用，含全部中文 |",
+              "| GameHelper-zh-langpack-v$ver.zip | 语言包：只含翻译文本，可覆盖到官方原版安装目录 |",
+              "",
+              "## 注意",
+              "- 官方启动器自动更新会验证签名并替换成官方英文文件，汉化会失效；重新复制语言包或重新下载本页资产即可。",
+              "- 语言包只能替换翻译文本；插件代码里的少数字符串（主要是调试信息）仍是英文。",
+              "- 如果某个新版本的字符串还没翻译，界面会显示英文原文，不会报错、不会崩溃。",
+              "",
+              "翻译约定与方法见仓库 docs/localization/。"
+          )
+          $notesPath = Join-Path $env:RUNNER_TEMP "notes.md"
+          ($notes -join [Environment]::NewLine) | Set-Content -Path $notesPath -Encoding utf8
+          gh release view $tagName --json tagName *> $null
+          if ($LASTEXITCODE -eq 0) {
+              gh release upload $tagName $assets --clobber
+          }
+          else {
+              gh release create $tagName $assets --title "GameHelper $ver 汉化版" --notes-file $notesPath --latest=false
+          }
+
+      - name: 回推合并提交
+        if: github.event_name != "push" && steps.skip.outputs.skip != "true"
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          git push origin "HEAD:$env:ZH_BRANCH"

@@ -3,6 +3,7 @@ bin/
 obj/
 publish/
 publish-downloader/
+dist/
 Test/
 test-runtime-backup/
 runtime-backup/
